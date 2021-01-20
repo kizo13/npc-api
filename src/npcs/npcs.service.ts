@@ -6,6 +6,7 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Buffer } from 'buffer';
 import { Request } from 'express';
+import * as sharp from 'sharp';
 import { AuthService } from 'src/auth/auth.service';
 import SessionTokenDataDto from 'src/auth/dtos/session-token-data.dto';
 import { Repository } from 'typeorm';
@@ -46,7 +47,10 @@ export class NpcsService {
       throw new UnauthorizedException();
     }
 
-    const blob = file.buffer.toString('base64');
+    const resizedImageBuffer = await sharp(file.buffer)
+      .resize(450, 450, { fit: 'inside' })
+      .toBuffer();
+    const blob = resizedImageBuffer.toString('base64');
     const newNpc = this.npcRepository.create({
       ...npc,
       blob,

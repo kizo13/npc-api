@@ -30,6 +30,7 @@ export class AuthService {
       date.getTime() + this.configService.get('JWT_EXPIRATION_TIME') * 60000,
     );
     const tokenData: SessionTokenDataDto = {
+      id: storedUser.id,
       email: body.email,
       expires: expireDate,
     };
@@ -47,5 +48,9 @@ export class AuthService {
         is_active,
       },
     };
+  }
+
+  decodeToken(token: string): SessionTokenDataDto {
+    return jwt.decode(token, this.configService.get('JWT_SECRET'));
   }
 }

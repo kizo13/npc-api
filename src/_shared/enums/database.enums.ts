@@ -7,6 +7,7 @@ export enum DbEnums {
   NPC_COLUMN_AGE = 'age',
   NPC_COLUMN_RACE = 'race',
   NPC_COLUMN_CULTURE = 'culture',
+  NPC_COLUMN_UPLOADER_ID = 'uploader_id',
 
   AVATAR_TABLE = 'avatar',
   AVATAR_COLUMN_ID = 'id',

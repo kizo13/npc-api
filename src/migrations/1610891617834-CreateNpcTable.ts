@@ -12,6 +12,7 @@ export class CreateNpcTable1610891617834 implements MigrationInterface {
             type: 'int',
             isPrimary: true,
             isGenerated: true,
+            generationStrategy: 'increment',
           },
           {
             name: db.NPC_COLUMN_BLOB,
@@ -20,27 +21,37 @@ export class CreateNpcTable1610891617834 implements MigrationInterface {
           },
           {
             name: db.NPC_COLUMN_GENDER,
-            type: 'boolean',
+            type: 'enum',
+            enum: ['MALE', 'FEMALE'],
+            isNullable: true,
           },
           {
             name: db.NPC_COLUMN_CLASS,
             type: 'varchar',
             length: '15',
+            isNullable: true,
           },
           {
             name: db.NPC_COLUMN_AGE,
             type: 'varchar',
             length: '15',
+            isNullable: true,
           },
           {
             name: db.NPC_COLUMN_RACE,
             type: 'varchar',
             length: '15',
+            isNullable: true,
           },
           {
             name: db.NPC_COLUMN_CULTURE,
             type: 'varchar',
             length: '15',
+            isNullable: true,
+          },
+          {
+            name: db.NPC_COLUMN_UPLOADER_ID,
+            type: 'smallint',
           },
         ],
       }),

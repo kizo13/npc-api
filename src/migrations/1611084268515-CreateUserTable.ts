@@ -11,7 +11,9 @@ export class CreateUserTable1611084268515 implements MigrationInterface {
             name: db.USER_COLUMN_ID,
             type: 'int',
             isPrimary: true,
+            isNullable: false,
             isGenerated: true,
+            generationStrategy: 'increment',
           },
           {
             name: db.USER_COLUMN_USERNAME,
@@ -31,7 +33,7 @@ export class CreateUserTable1611084268515 implements MigrationInterface {
           },
           {
             name: db.USER_COLUMN_AVATAR_ID,
-            type: 'int',
+            type: 'smallint',
             isNullable: true,
           },
           {

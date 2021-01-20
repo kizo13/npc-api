@@ -17,7 +17,7 @@ import { createConnection } from 'typeorm';
         database: configService.get('POSTGRES_DB'),
         entities: ['dist/**/*.entity.js'],
         migrationsTableName: 'migration',
-        migrations: ['dist/migrations/**/*.js'],
+        migrations: ['dist/src/migrations/**/*.js'],
       }),
     }),
     ConfigModule,
@@ -39,7 +39,7 @@ export class DatabaseModule {
         database: this.configService.get('POSTGRES_DB'),
         entities: ['dist/**/*.entity.js'],
         migrationsTableName: 'migration',
-        migrations: ['dist/migrations/**/*.js'],
+        migrations: ['dist/src/migrations/**/*.js'],
       });
       await connection.runMigrations();
     } catch (error) {

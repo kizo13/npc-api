@@ -11,7 +11,9 @@ export class CreateAvatarTable1611083185887 implements MigrationInterface {
             name: db.AVATAR_COLUMN_ID,
             type: 'int',
             isPrimary: true,
+            isNullable: false,
             isGenerated: true,
+            generationStrategy: 'increment',
           },
           {
             name: db.AVATAR_COLUMN_BLOB,

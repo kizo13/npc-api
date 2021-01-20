@@ -1,12 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import MetaDto from './meta/dtos/meta.dto';
+import { MetaService } from './meta/meta.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly metaService: MetaService) {}
 
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getMeta(): MetaDto {
+    return this.metaService.getMeta();
   }
 }

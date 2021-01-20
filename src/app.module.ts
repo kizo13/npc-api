@@ -2,10 +2,11 @@ import * as Joi from '@hapi/joi';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { DatabaseModule } from './_shared/modules/database.module';
+import { NpcsModule } from './npcs/npcs.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
+import { MetaModule } from './meta/meta.module';
 
 @Module({
   imports: [
@@ -21,11 +22,12 @@ import { UsersModule } from './users/users.module';
         PORT: Joi.number(),
       }),
     }),
+    MetaModule,
     DatabaseModule,
+    NpcsModule,
     AuthModule,
     UsersModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

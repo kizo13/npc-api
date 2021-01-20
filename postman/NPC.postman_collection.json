@@ -6,7 +6,7 @@
 	},
 	"item": [
 		{
-			"name": "Get hello",
+			"name": "Get meta",
 			"event": [
 				{
 					"listen": "test",
@@ -138,6 +138,111 @@
 						"{{api-version}}",
 						"users",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get NPC's",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/npcs",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"npcs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create NPC",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/zkilvinger/Downloads/c356a7a813627851c1a20ee74632aa2c.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/npcs",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"npcs"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update NPC",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"gender\": \"MALE\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/npcs/2",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"npcs",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete NPC",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/npcs/2",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"npcs",
+						"2"
 					]
 				}
 			},

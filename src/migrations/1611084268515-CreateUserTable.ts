@@ -44,10 +44,6 @@ export class CreateUserTable1611084268515 implements MigrationInterface {
       }),
       true,
     );
-
-    queryRunner.connection.query(
-      `INSERT INTO "user" (${db.USER_COLUMN_USERNAME}, ${db.USER_COLUMN_EMAIL}, ${db.USER_COLUMN_PASSWORD}, ${db.USER_COLUMN_ISACTIVE}) VALUES ('kizo13', 'kizo13@gmail.com', '$argon2i$v=19$m=16,t=2,p=1$SWJHdUFyV2RDNDV3bGFWMQ$yuyQ2/08XXVmfxi3vE8NCg', true)`,
-    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

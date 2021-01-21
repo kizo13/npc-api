@@ -1,7 +1,13 @@
-import { MigrationInterface, QueryRunner, Table } from 'typeorm';
+import {
+  MigrationInterface,
+  QueryRunner,
+  Table,
+  TableForeignKey,
+  TableIndex,
+} from 'typeorm';
 import { DbEnums as db } from '../_shared/enums/database.enums';
 
-export class CreateNpcTable1610891617834 implements MigrationInterface {
+export class CreateNpcTable1611084268515 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
@@ -57,17 +63,35 @@ export class CreateNpcTable1610891617834 implements MigrationInterface {
       }),
       true,
     );
+
+    await queryRunner.createIndex(
+      db.USER_TABLE,
+      new TableIndex({
+        name: db.NOTE_IDX_COLUMN_ID,
+        columnNames: [db.NOTE_COLUMN_ID],
+      }),
+    );
+
+    await queryRunner.createForeignKey(
+      db.NPC_TABLE,
+      new TableForeignKey({
+        columnNames: [db.NPC_COLUMN_UPLOADER_ID],
+        referencedColumnNames: [db.USER_COLUMN_ID],
+        referencedTableName: db.USER_TABLE,
+        onDelete: 'CASCADE',
+      }),
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    // const table = await queryRunner.getTable('question');
-    // const foreignKey = table.foreignKeys.find(
-    //   (fk) => fk.columnNames.indexOf('questionId') !== -1,
-    // );
-    // await queryRunner.dropForeignKey('question', foreignKey);
-    // await queryRunner.dropColumn('question', 'questionId');
+    const table = await queryRunner.getTable(db.USER_TABLE);
+    const foreignKey = table.foreignKeys.find(
+      (fk) => fk.columnNames.indexOf(db.USER_COLUMN_ID) !== -1,
+    );
+    await queryRunner.dropForeignKey(db.USER_TABLE, foreignKey);
+    await queryRunner.dropColumn(db.NPC_TABLE, db.NPC_COLUMN_UPLOADER_ID);
     // await queryRunner.dropTable('answer');
-    // await queryRunner.dropIndex('question', 'IDX_QUESTION_NAME');
+    await queryRunner.dropIndex(db.NPC_TABLE, db.NOTE_IDX_COLUMN_ID);
     await queryRunner.dropTable(db.NPC_TABLE);
   }
 }

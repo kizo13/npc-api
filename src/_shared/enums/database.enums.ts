@@ -20,6 +20,7 @@ export enum DbEnums {
   USER_COLUMN_PASSWORD = 'password',
   USER_COLUMN_AVATAR_ID = 'avatar_id',
   USER_COLUMN_ISACTIVE = 'is_active',
+  USER_IDX_COLUMN_EMAIL = 'IDX_email',
 
   NOTE_TABLE = 'note',
   NOTE_COLUMN_ID = 'id',
@@ -29,4 +30,5 @@ export enum DbEnums {
   NOTE_COLUMN_MODIFIED_BY = 'modified_by',
   NOTE_COLUMN_CREATED_AT = 'created_at',
   NOTE_COLUMN_MODIFIED_AT = 'modified_at',
+  NOTE_IDX_COLUMN_ID = 'IDX_id',
 }

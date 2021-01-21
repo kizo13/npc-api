@@ -1,7 +1,7 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 import { DbEnums as db } from '../_shared/enums/database.enums';
 
-export class CreateAvatarTable1611083185887 implements MigrationInterface {
+export class CreateAvatarTable1610891617834 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({

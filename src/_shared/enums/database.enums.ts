@@ -20,4 +20,13 @@ export enum DbEnums {
   USER_COLUMN_PASSWORD = 'password',
   USER_COLUMN_AVATAR_ID = 'avatar_id',
   USER_COLUMN_ISACTIVE = 'is_active',
+
+  NOTE_TABLE = 'note',
+  NOTE_COLUMN_ID = 'id',
+  NOTE_COLUMN_NPC_ID = 'npc_id',
+  NOTE_COLUMN_DESCRIPTION = 'description',
+  NOTE_COLUMN_CREATED_BY = 'created_by',
+  NOTE_COLUMN_MODIFIED_BY = 'modified_by',
+  NOTE_COLUMN_CREATED_AT = 'created_at',
+  NOTE_COLUMN_MODIFIED_AT = 'modified_at',
 }

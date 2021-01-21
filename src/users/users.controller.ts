@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
 import FindOneParams from 'src/_shared/classes/find-one-param';
 import { AuthGuard } from 'src/_shared/guards/auth.guard';
-import UpdateUserPasswordDto from './dtos/update-user-password.dto';
+import UpdateUserDto from './dtos/update-user.dto';
 import { User } from './entities/user.entity';
 import { UsersService } from './users.service';
 
@@ -20,11 +20,11 @@ export class UsersController {
     return this.usersService.findOne(id);
   }
 
-  @Put(':id/change-password')
-  updateUserPassword(
+  @Put(':id')
+  updateUser(
     @Param() { id }: FindOneParams,
-    @Body() body: UpdateUserPasswordDto,
+    @Body() body: UpdateUserDto,
   ): Promise<User> {
-    return this.usersService.updateUserPassword(id, body.password);
+    return this.usersService.updateUser(id, body);
   }
 }

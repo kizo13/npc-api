@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import * as argon2 from 'argon2';
 import { User } from './entities/user.entity';
 import { DbEnums as db } from '../_shared/enums/database.enums';
+import UpdateUserDto from './dtos/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -52,9 +53,12 @@ export class UsersService {
     await this.usersRepository.delete(id);
   }
 
-  async updateUserPassword(id: string, password: string): Promise<User> {
-    const hashedPassword = await argon2.hash(password);
-    await this.usersRepository.update(id, { password: hashedPassword });
+  async updateUser(id: string, user: UpdateUserDto): Promise<User> {
+    if (user.password !== undefined) {
+      user.password = await argon2.hash(user.password);
+    }
+
+    await this.usersRepository.update(id, { ...user });
 
     const updatedUser = await this.findOne(id);
     if (!updatedUser) {

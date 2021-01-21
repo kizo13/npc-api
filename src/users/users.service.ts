@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import * as argon2 from 'argon2';
 import { User } from './entities/user.entity';
 import { DbEnums as db } from '../_shared/enums/database.enums';
 
@@ -49,5 +50,16 @@ export class UsersService {
 
   async remove(id: string): Promise<void> {
     await this.usersRepository.delete(id);
+  }
+
+  async updateUserPassword(id: string, password: string): Promise<User> {
+    const hashedPassword = await argon2.hash(password);
+    await this.usersRepository.update(id, { password: hashedPassword });
+
+    const updatedUser = await this.findOne(id);
+    if (!updatedUser) {
+      throw new NotFoundException(`User with id ${id} not found`);
+    }
+    return updatedUser;
   }
 }

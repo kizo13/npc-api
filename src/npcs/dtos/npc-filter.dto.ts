@@ -28,7 +28,7 @@ class NpcFilterDto {
 
   @IsNumber()
   @IsOptional()
-  public uploader_id: number;
+  public uploaderId: number;
 
   static where(
     filterDto: NpcFilterDto,
@@ -62,9 +62,9 @@ class NpcFilterDto {
       whereParams.culture = filterDto.culture;
     }
 
-    if (filterDto.uploader_id) {
-      whereStrParts.push(`${npcAlias}.uploader_id = :uploader_id`);
-      whereParams.uploader_id = filterDto.uploader_id;
+    if (filterDto.uploaderId) {
+      whereStrParts.push(`${npcAlias}."uploaderId" = :uploaderId`);
+      whereParams.uploaderId = filterDto.uploaderId;
     }
 
     return [whereStrParts.join(' AND '), whereParams];

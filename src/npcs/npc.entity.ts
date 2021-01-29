@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/users/user.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 class Npc {
@@ -24,7 +25,10 @@ class Npc {
   public culture: string;
 
   @Column()
-  uploader_id: number;
+  uploaderId: number;
+
+  @ManyToOne(() => User, { eager: true })
+  public uploader: User;
 }
 
 export default Npc;

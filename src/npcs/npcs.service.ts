@@ -13,7 +13,7 @@ import { Repository } from 'typeorm';
 import CreateNpcDto from './dtos/create-npc.dto';
 import NpcFilterDto from './dtos/npc-filter.dto';
 import UpdateNpcDto from './dtos/update-npc.dto';
-import Npc from './entities/npc.entity';
+import Npc from './npc.entity';
 
 @Injectable()
 export class NpcsService {
@@ -54,7 +54,7 @@ export class NpcsService {
     const newNpc = this.npcRepository.create({
       ...npc,
       blob,
-      uploader_id: userData.id,
+      uploaderId: userData.id,
     });
     await this.npcRepository.save(newNpc);
     return newNpc;

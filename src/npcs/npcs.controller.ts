@@ -18,7 +18,7 @@ import { AuthGuard } from 'src/_shared/guards/auth.guard';
 import CreateNpcDto from './dtos/create-npc.dto';
 import NpcFilterDto from './dtos/npc-filter.dto';
 import UpdateNpcDto from './dtos/update-npc.dto';
-import Npc from './entities/npc.entity';
+import Npc from './npc.entity';
 import { NpcsService } from './npcs.service';
 
 @UseGuards(AuthGuard)

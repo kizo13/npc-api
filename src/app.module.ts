@@ -7,6 +7,7 @@ import { NpcsModule } from './npcs/npcs.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { MetaModule } from './meta/meta.module';
+import { AvatarsModule } from './avatars/avatars.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { MetaModule } from './meta/meta.module';
     NpcsModule,
     AuthModule,
     UsersModule,
+    AvatarsModule,
   ],
   controllers: [AppController],
 })

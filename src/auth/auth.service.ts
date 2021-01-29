@@ -37,16 +37,10 @@ export class AuthService {
     const token = jwt.encode(tokenData, this.configService.get('JWT_SECRET'));
     const cookie = `AuthSession=${token}; HttpOnly; Path=/; Expires=${expireDate}`;
     req.res.setHeader('Set-Cookie', cookie);
-    const { id, username, email, avatar_id, is_active } = storedUser;
+    const { password: _password, ...rest } = storedUser;
     return {
       ok: true,
-      data: {
-        id,
-        username,
-        email,
-        avatar_id,
-        is_active,
-      },
+      data: { ...rest },
     };
   }
 

@@ -7,7 +7,7 @@ class UpdateUserDto {
 
   @IsNumber()
   @IsOptional()
-  public avatar_id: number;
+  public avatarId: number;
 }
 
 export default UpdateUserDto;

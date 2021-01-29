@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
 import FindOneParams from 'src/_shared/classes/find-one-param';
 import { AuthGuard } from 'src/_shared/guards/auth.guard';
 import UpdateUserDto from './dtos/update-user.dto';
-import { User } from './entities/user.entity';
+import { User } from './user.entity';
 import { UsersService } from './users.service';
 
 @UseGuards(AuthGuard)
@@ -11,12 +11,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getUsers(): Promise<User[]> {
+  getUsers(): Promise<Omit<User, 'password'>[]> {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  getUserById(@Param() { id }: FindOneParams): Promise<User> {
+  getUserById(@Param() { id }: FindOneParams): Promise<Omit<User, 'password'>> {
     return this.usersService.findOne(id);
   }
 
@@ -24,7 +24,7 @@ export class UsersController {
   updateUser(
     @Param() { id }: FindOneParams,
     @Body() body: UpdateUserDto,
-  ): Promise<User> {
+  ): Promise<Omit<User, 'password'>> {
     return this.usersService.updateUser(id, body);
   }
 }

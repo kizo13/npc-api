@@ -2,8 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as argon2 from 'argon2';
-import { User } from './entities/user.entity';
-import { DbEnums as db } from '../_shared/enums/database.enums';
+import { User } from './user.entity';
 import UpdateUserDto from './dtos/update-user.dto';
 
 @Injectable()
@@ -13,15 +12,11 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  findAll(): Promise<User[]> {
-    return this.usersRepository.find({
-      select: [
-        db.USER_COLUMN_ID,
-        db.USER_COLUMN_USERNAME,
-        db.USER_COLUMN_EMAIL,
-        db.USER_COLUMN_AVATAR_ID,
-        db.USER_COLUMN_ISACTIVE,
-      ],
+  async findAll(): Promise<Omit<User, 'password'>[]> {
+    const allUsers = await this.usersRepository.find();
+    return allUsers.map((user) => {
+      const { password: _password, ...rest } = user;
+      return rest;
     });
   }
 
@@ -29,31 +24,30 @@ export class UsersService {
     const userAlias = 'user';
     return this.usersRepository
       .createQueryBuilder(userAlias)
+      .leftJoinAndSelect(`${userAlias}.avatar`, 'avatar')
       .where(
-        `${userAlias}.email = :email AND ${userAlias}.is_active = :isActive`,
+        `"${userAlias}".email = :email AND "${userAlias}"."isActive" = :isActive`,
         { email, isActive },
       )
       .getOne();
   }
 
-  findOne(id: string, isActive = true): Promise<User> {
-    return this.usersRepository.findOne(id, {
-      select: [
-        db.USER_COLUMN_ID,
-        db.USER_COLUMN_USERNAME,
-        db.USER_COLUMN_EMAIL,
-        db.USER_COLUMN_AVATAR_ID,
-        db.USER_COLUMN_ISACTIVE,
-      ],
-      where: { is_active: isActive },
+  async findOne(id: string, isActive = true): Promise<Omit<User, 'password'>> {
+    const user = await this.usersRepository.findOne(id, {
+      where: { isActive },
     });
+    const { password: _password, ...rest } = user;
+    return rest;
   }
 
   async remove(id: string): Promise<void> {
     await this.usersRepository.delete(id);
   }
 
-  async updateUser(id: string, user: UpdateUserDto): Promise<User> {
+  async updateUser(
+    id: string,
+    user: UpdateUserDto,
+  ): Promise<Omit<User, 'password'>> {
     if (user.password !== undefined) {
       user.password = await argon2.hash(user.password);
     }

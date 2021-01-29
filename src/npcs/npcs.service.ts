@@ -9,7 +9,7 @@ import { Request } from 'express';
 import * as sharp from 'sharp';
 import { AuthService } from 'src/auth/auth.service';
 import SessionTokenDataDto from 'src/auth/dtos/session-token-data.dto';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import CreateNpcDto from './dtos/create-npc.dto';
 import NpcFilterDto from './dtos/npc-filter.dto';
 import UpdateNpcDto from './dtos/update-npc.dto';
@@ -73,7 +73,7 @@ export class NpcsService {
     };
   }
 
-  deleteNpc(id: number) {
+  deleteNpc(id: number): Promise<DeleteResult> {
     return this.npcRepository.delete(id);
   }
 }

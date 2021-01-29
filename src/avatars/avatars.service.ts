@@ -4,7 +4,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import { Request } from 'express';
 import * as sharp from 'sharp';
 import Avatar from './avatar.entity';
@@ -53,7 +53,7 @@ export class AvatarsService {
     return newAvatar;
   }
 
-  deleteAvatar(id: number) {
+  deleteAvatar(id: number): Promise<DeleteResult> {
     return this.avatarRepository.delete(id);
   }
 }

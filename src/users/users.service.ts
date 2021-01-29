@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeleteResult, Repository } from 'typeorm';
 import * as argon2 from 'argon2';
 import { User } from './user.entity';
 import UpdateUserDto from './dtos/update-user.dto';
@@ -40,8 +40,8 @@ export class UsersService {
     return rest;
   }
 
-  async remove(id: string): Promise<void> {
-    await this.usersRepository.delete(id);
+  removeUser(id: string): Promise<DeleteResult> {
+    return this.usersRepository.delete(id);
   }
 
   async updateUser(

@@ -144,6 +144,37 @@
 			"response": []
 		},
 		{
+			"name": "Update user",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "// {\n//     \"password\": \"admin\"\n// }\n{\n    \"avatar_id\": 2\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/users/1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Get NPC's",
 			"request": {
 				"method": "GET",
@@ -175,7 +206,7 @@
 						{
 							"key": "file",
 							"type": "file",
-							"src": "/home/zkilvinger/Downloads/c356a7a813627851c1a20ee74632aa2c.jpg"
+							"src": []
 						}
 					]
 				},
@@ -232,7 +263,7 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/npcs/2",
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/npcs/3",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -242,7 +273,102 @@
 						"api",
 						"{{api-version}}",
 						"npcs",
-						"2"
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get notes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/notes",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"notes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get avatars",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/avatars",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"avatars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create avatar",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": []
+						}
+					]
+				},
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/avatars",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"avatars"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete avatar",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/avatars/1",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"avatars",
+						"1"
 					]
 				}
 			},

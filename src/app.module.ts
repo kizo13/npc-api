@@ -7,6 +7,7 @@ import { NpcsModule } from './npcs/npcs.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { MetaModule } from './meta/meta.module';
+import { NotesModule } from './notes/notes.module';
 import { AvatarsModule } from './avatars/avatars.module';
 
 @Module({
@@ -30,6 +31,7 @@ import { AvatarsModule } from './avatars/avatars.module';
     NpcsModule,
     AuthModule,
     UsersModule,
+    NotesModule,
     AvatarsModule,
   ],
   controllers: [AppController],

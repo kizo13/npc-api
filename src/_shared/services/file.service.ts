@@ -22,7 +22,10 @@ class FileService {
     } catch (error) {
       throw new InternalServerErrorException(error);
     }
-    if (!this.configService.get('SUPPORTED_FILE_MIME_TYPES').includes(mimeType))
+    const supportedFileTypes = this.configService
+      .get('SUPPORTED_FILE_MIME_TYPES')
+      .split(',');
+    if (!supportedFileTypes.includes(mimeType))
       throw new UnsupportedMediaTypeException();
     if (!file) {
       throw new FileInvalidException();

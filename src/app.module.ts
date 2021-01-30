@@ -13,6 +13,7 @@ import { AvatarsModule } from './avatars/avatars.module';
   imports: [
     ConfigModule.forRoot({
       validationSchema: Joi.object({
+        ADMIN_USERS: Joi.string().required(),
         JWT_EXPIRATION_TIME: Joi.number().required(),
         JWT_SECRET: Joi.string().required(),
         POSTGRES_HOST: Joi.string().required(),
@@ -21,6 +22,7 @@ import { AvatarsModule } from './avatars/avatars.module';
         POSTGRES_PASSWORD: Joi.string().required(),
         POSTGRES_DB: Joi.string().required(),
         PORT: Joi.number(),
+        SUPPORTED_FILE_MIME_TYPES: Joi.string().required(),
       }),
     }),
     MetaModule,

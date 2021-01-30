@@ -1,5 +1,15 @@
-import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  Param,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import FindOneParams from 'src/_shared/classes/find-one-param';
+import { AdminOnly } from 'src/_shared/decorators/admin-only.decorator';
 import { AuthGuard } from 'src/_shared/guards/auth.guard';
 import UpdateUserDto from './dtos/update-user.dto';
 import { User } from './user.entity';
@@ -26,5 +36,12 @@ export class UsersController {
     @Body() body: UpdateUserDto,
   ): Promise<Omit<User, 'password'>> {
     return this.usersService.updateUser(id, body);
+  }
+
+  @Delete(':id')
+  @HttpCode(204)
+  @AdminOnly()
+  deleteUser(@Param('id') id: string) {
+    return this.usersService.deleteUser(id);
   }
 }

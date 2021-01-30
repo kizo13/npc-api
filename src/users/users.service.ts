@@ -1,9 +1,10 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import * as argon2 from 'argon2';
 import { User } from './user.entity';
 import UpdateUserDto from './dtos/update-user.dto';
+import UserNotFoundException from 'src/_shared/exceptions/user-not-found.exception';
 
 @Injectable()
 export class UsersService {
@@ -40,10 +41,6 @@ export class UsersService {
     return rest;
   }
 
-  removeUser(id: string): Promise<DeleteResult> {
-    return this.usersRepository.delete(id);
-  }
-
   async updateUser(
     id: string,
     user: UpdateUserDto,
@@ -56,8 +53,17 @@ export class UsersService {
 
     const updatedUser = await this.findOne(id);
     if (!updatedUser) {
-      throw new NotFoundException(`User with id ${id} not found`);
+      throw new UserNotFoundException(id);
     }
     return updatedUser;
+  }
+
+  async deleteUser(id: string) {
+    const result = await this.usersRepository.delete(id);
+    if (result.affected === 0) {
+      throw new UserNotFoundException(id);
+    }
+
+    return;
   }
 }

@@ -102,12 +102,14 @@ export class NpcsService {
     return;
   }
 
-  async getClasses(): Promise<string[]> {
+  async getClasses(filterQuery: string): Promise<string[]> {
+    const filter = filterQuery || '';
     const npcAlias = 'npc';
     const npcList = await this.npcRepository
       .createQueryBuilder(npcAlias)
       .select([`${npcAlias}.class`])
       .distinctOn([`${npcAlias}.class`])
+      .where(`${npcAlias}.class like :class`, { class: `%${filter}%` })
       .getMany();
     return npcList.map((npc) => npc.class);
   }

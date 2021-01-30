@@ -218,6 +218,34 @@
 			"response": []
 		},
 		{
+			"name": "Get available classes",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/npcs/classes?filter=",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"npcs",
+						"classes"
+					],
+					"query": [
+						{
+							"key": "filter",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Create NPC",
 			"request": {
 				"method": "POST",

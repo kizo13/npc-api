@@ -18,7 +18,6 @@ export class AuthService {
   async login(body: LoginRequestDto, req: Request): Promise<LoginResponseDto> {
     const storedUser = await this.usersService.findOneByEmail(body.email);
     if (!storedUser) throw new UnauthorizedException();
-
     const isPassVerified = await argon2.verify(
       storedUser.password,
       body.password,
@@ -38,9 +37,15 @@ export class AuthService {
     const cookie = `AuthSession=${token}; HttpOnly; Path=/; Expires=${expireDate}`;
     req.res.setHeader('Set-Cookie', cookie);
     const { password: _password, ...rest } = storedUser;
+    if (rest.avatar) {
+      rest.avatar = {
+        ...rest.avatar,
+        blob: Buffer.from(rest.avatar.blob, 'base64').toString('ascii'),
+      };
+    }
     return {
       ok: true,
-      data: { ...rest },
+      data: rest,
     };
   }
 

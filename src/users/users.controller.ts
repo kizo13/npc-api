@@ -21,12 +21,12 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  getUsers(): Promise<Omit<User, 'password'>[]> {
+  getUsers(): Promise<User[]> {
     return this.usersService.findAll();
   }
 
   @Get(':id')
-  getUserById(@Param() { id }: FindOneParams): Promise<Omit<User, 'password'>> {
+  getUserById(@Param() { id }: FindOneParams): Promise<User> {
     return this.usersService.findOne(id);
   }
 
@@ -34,7 +34,7 @@ export class UsersController {
   updateUser(
     @Param() { id }: FindOneParams,
     @Body() body: UpdateUserDto,
-  ): Promise<Omit<User, 'password'>> {
+  ): Promise<User> {
     return this.usersService.updateUser(id, body);
   }
 

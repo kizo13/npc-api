@@ -1,4 +1,5 @@
 import { IsNumber, IsOptional, IsString } from 'class-validator';
+import Avatar from 'src/avatars/avatar.entity';
 
 class UpdateUserDto {
   @IsString()
@@ -7,7 +8,7 @@ class UpdateUserDto {
 
   @IsNumber()
   @IsOptional()
-  public avatarId: number;
+  public avatar: Avatar;
 }
 
 export default UpdateUserDto;

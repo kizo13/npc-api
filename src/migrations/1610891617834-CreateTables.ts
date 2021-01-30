@@ -28,6 +28,11 @@ export class CreateTables1610891617834 implements MigrationInterface {
             type: 'bytea',
             isNullable: false,
           },
+          {
+            name: db.NPC_COLUMN_CREATED_AT,
+            type: 'timestamp',
+            default: 'CURRENT_TIMESTAMP',
+          },
         ],
       }),
       true,
@@ -120,6 +125,16 @@ export class CreateTables1610891617834 implements MigrationInterface {
             length: '15',
             isNullable: true,
           },
+          {
+            name: db.NPC_COLUMN_CREATED_AT,
+            type: 'timestamp',
+            default: 'CURRENT_TIMESTAMP',
+          },
+          {
+            name: db.NPC_COLUMN_MODIFIED_AT,
+            type: 'timestamp',
+            isNullable: true,
+          },
         ],
       }),
       true,
@@ -145,6 +160,12 @@ export class CreateTables1610891617834 implements MigrationInterface {
             isNullable: true,
           },
           {
+            name: db.NOTE_COLUMN_NAME,
+            type: 'varchar',
+            length: '40',
+            isNullable: true,
+          },
+          {
             name: db.NOTE_COLUMN_CREATED_AT,
             type: 'timestamp',
             default: 'CURRENT_TIMESTAMP',
@@ -152,7 +173,7 @@ export class CreateTables1610891617834 implements MigrationInterface {
           {
             name: db.NOTE_COLUMN_MODIFIED_AT,
             type: 'timestamp',
-            default: 'CURRENT_TIMESTAMP',
+            isNullable: true,
           },
         ],
       }),

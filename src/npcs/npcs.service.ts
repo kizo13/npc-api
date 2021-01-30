@@ -5,6 +5,7 @@ import { Request } from 'express';
 import * as sharp from 'sharp';
 import { AuthService } from 'src/auth/auth.service';
 import SessionTokenDataDto from 'src/auth/dtos/session-token-data.dto';
+import { UsersService } from 'src/users/users.service';
 import NpcNotFoundException from 'src/_shared/exceptions/npc-not-found.exception';
 import { DeleteResult, Repository } from 'typeorm';
 import CreateNpcDto from './dtos/create-npc.dto';
@@ -18,15 +19,17 @@ export class NpcsService {
     @InjectRepository(Npc)
     private npcRepository: Repository<Npc>,
     private readonly authService: AuthService,
+    private readonly usersService: UsersService,
   ) {}
 
   async findAll(filterDto: NpcFilterDto): Promise<Npc[]> {
     const npcAlias = 'npc';
+    const uploaderAlias = 'uploader';
     const npcList = await this.npcRepository
       .createQueryBuilder(npcAlias)
+      .leftJoinAndSelect(`${npcAlias}.${uploaderAlias}`, uploaderAlias)
       .where(...NpcFilterDto.where(filterDto, npcAlias))
       .getMany();
-
     return npcList.map((npc) => ({
       ...npc,
       blob: Buffer.from(npc.blob, 'base64').toString('ascii'),
@@ -44,6 +47,9 @@ export class NpcsService {
       throw new UnauthorizedException();
     }
 
+    const storedUser = await this.usersService.findOne(String(userData.id));
+    if (!storedUser) throw new UnauthorizedException();
+
     const resizedImageBuffer = await sharp(file.buffer)
       .resize(450, 450, { fit: 'inside' })
       .toBuffer();
@@ -51,16 +57,34 @@ export class NpcsService {
     const newNpc = this.npcRepository.create({
       ...npc,
       blob,
-      uploaderId: userData.id,
+      uploader: storedUser,
+      createdAt: new Date(),
     });
     await this.npcRepository.save(newNpc);
     return newNpc;
   }
 
   async updateNpc(id: string, npc: UpdateNpcDto): Promise<Npc> {
-    await this.npcRepository.update(id, { ...npc });
+    await this.npcRepository.update(id, { ...npc, modifiedAt: new Date() });
 
-    const updatedNpc = await this.npcRepository.findOne(id);
+    const npcAlias = 'npc';
+    const uploaderAlias = 'uploader';
+    const avatarAlias = 'avatar';
+    const updatedNpc = await this.npcRepository
+      .createQueryBuilder(npcAlias)
+      .leftJoinAndSelect(`${npcAlias}.${uploaderAlias}`, uploaderAlias)
+      .leftJoinAndSelect(`${uploaderAlias}.${avatarAlias}`, avatarAlias)
+      .where(`${npcAlias}.id = :id`, { id })
+      .getOne();
+    if (updatedNpc.uploader.avatar) {
+      updatedNpc.uploader.avatar = {
+        ...updatedNpc.uploader.avatar,
+        blob: Buffer.from(updatedNpc.uploader.avatar.blob, 'base64').toString(
+          'ascii',
+        ),
+      };
+    }
+
     if (!updatedNpc) {
       throw new NpcNotFoundException(id);
     }
@@ -75,7 +99,6 @@ export class NpcsService {
     if (result.affected === 0) {
       throw new NpcNotFoundException(id);
     }
-
     return;
   }
 }

@@ -6,9 +6,15 @@ import { NpcsController } from './npcs.controller';
 import Npc from './npc.entity';
 import { AuthModule } from 'src/auth/auth.module';
 import FileService from 'src/_shared/services/file.service';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Npc]), ConfigModule, AuthModule],
+  imports: [
+    TypeOrmModule.forFeature([Npc]),
+    ConfigModule,
+    AuthModule,
+    UsersModule,
+  ],
   controllers: [NpcsController],
   providers: [NpcsService, FileService],
   exports: [NpcsService],

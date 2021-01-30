@@ -19,8 +19,18 @@ export class AvatarsService {
     private readonly usersService: UsersService,
   ) {}
 
-  findAll(): Promise<Avatar[]> {
-    return this.avatarRepository.find();
+  async findAll(): Promise<Avatar[]> {
+    const avatarAlias = 'avatar';
+    const uploaderAlias = 'uploader';
+    const avatarList = await this.avatarRepository
+      .createQueryBuilder(avatarAlias)
+      .leftJoinAndSelect(`${avatarAlias}.${uploaderAlias}`, uploaderAlias)
+      .getMany();
+
+    return avatarList.map((avatar) => ({
+      ...avatar,
+      blob: Buffer.from(avatar.blob, 'base64').toString('ascii'),
+    }));
   }
 
   async createAvatar(file, req: Request): Promise<Avatar> {
@@ -45,6 +55,7 @@ export class AvatarsService {
     const blob = resizedImageBuffer.toString('base64');
     const newAvatar = this.avatarRepository.create({
       blob,
+      createdAt: new Date(),
       uploader,
     });
     await this.avatarRepository.save(newAvatar);

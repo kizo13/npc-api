@@ -8,10 +8,15 @@ export enum DbEnums {
   NPC_COLUMN_RACE = 'race',
   NPC_COLUMN_CULTURE = 'culture',
   NPC_COLUMN_UPLOADER_ID = 'uploaderId',
+  NPC_COLUMN_CREATED_BY_ID = 'createdById',
+  NPC_COLUMN_MODIFIED_BY_ID = 'modifiedById',
+  NPC_COLUMN_CREATED_AT = 'createdAt',
+  NPC_COLUMN_MODIFIED_AT = 'modifiedAt',
 
   AVATAR_TABLE = 'avatar',
   AVATAR_COLUMN_ID = 'id',
   AVATAR_COLUMN_BLOB = 'blob',
+  AVATAR_COLUMN_CREATED_AT = 'createdAt',
   AVATAR_COLUMN_UPLOADER_ID = 'uploaderId',
 
   USER_TABLE = 'user',
@@ -25,6 +30,7 @@ export enum DbEnums {
   NOTE_TABLE = 'note',
   NOTE_COLUMN_ID = 'id',
   NOTE_COLUMN_NPC_ID = 'npcId',
+  NOTE_COLUMN_NAME = 'name',
   NOTE_COLUMN_DESCRIPTION = 'description',
   NOTE_COLUMN_CREATED_BY_ID = 'createdById',
   NOTE_COLUMN_MODIFIED_BY_ID = 'modifiedById',

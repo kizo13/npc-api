@@ -24,11 +24,14 @@ class Npc {
   @Column()
   public culture: string;
 
-  @Column()
-  uploaderId: number;
-
-  @ManyToOne(() => User, { eager: true })
+  @ManyToOne(() => User)
   public uploader: User;
+
+  @Column({ type: 'timestamp' })
+  public createdAt: Date;
+
+  @Column({ type: 'timestamp' })
+  public modifiedAt: Date;
 }
 
 export default Npc;

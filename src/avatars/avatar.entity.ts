@@ -15,6 +15,9 @@ class Avatar {
   @Column()
   public blob: string;
 
+  @Column({ type: 'timestamp' })
+  public createdAt: Date;
+
   @OneToOne(() => User)
   @JoinColumn()
   public uploader: User;

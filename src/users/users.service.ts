@@ -5,6 +5,7 @@ import * as argon2 from 'argon2';
 import { User } from './user.entity';
 import UpdateUserDto from './dtos/update-user.dto';
 import UserNotFoundException from 'src/_shared/exceptions/user-not-found.exception';
+import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
 
 @Injectable()
 export class UsersService {
@@ -15,13 +16,10 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     const usersList = await this.usersRepository.find();
-    return usersList.map((user) => ({
-      ...user,
-      avatar: {
-        ...user.avatar,
-        blob: Buffer.from(user.avatar.blob, 'base64').toString('ascii'),
-      },
-    }));
+    return usersList.map((user) => {
+      user.avatar = updateBlobToBase64(user.avatar);
+      return user;
+    });
   }
 
   findOneByEmail(email: string, isActive = true): Promise<User> {
@@ -41,12 +39,7 @@ export class UsersService {
     const storedUser = await this.usersRepository.findOne(id, {
       where: { isActive },
     });
-    if (storedUser.avatar) {
-      storedUser.avatar = {
-        ...storedUser.avatar,
-        blob: Buffer.from(storedUser.avatar.blob, 'base64').toString('ascii'),
-      };
-    }
+    storedUser.avatar = updateBlobToBase64(storedUser.avatar);
     return storedUser;
   }
 
@@ -68,12 +61,7 @@ export class UsersService {
     if (!updatedUser) {
       throw new UserNotFoundException(id);
     }
-    if (updatedUser.avatar) {
-      updatedUser.avatar = {
-        ...updatedUser.avatar,
-        blob: Buffer.from(updatedUser.avatar.blob, 'base64').toString('ascii'),
-      };
-    }
+    updatedUser.avatar = updateBlobToBase64(updatedUser.avatar);
     return updatedUser;
   }
 

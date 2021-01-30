@@ -9,6 +9,7 @@ import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
 import UserNotFoundException from 'src/_shared/exceptions/user-not-found.exception';
 import AvatarNotFoundException from 'src/_shared/exceptions/avatar-not-found.exception';
+import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
 
 @Injectable()
 export class AvatarsService {
@@ -27,10 +28,7 @@ export class AvatarsService {
       .leftJoinAndSelect(`${avatarAlias}.${uploaderAlias}`, uploaderAlias)
       .getMany();
 
-    return avatarList.map((avatar) => ({
-      ...avatar,
-      blob: Buffer.from(avatar.blob, 'base64').toString('ascii'),
-    }));
+    return avatarList.map((avatar) => updateBlobToBase64(avatar));
   }
 
   async createAvatar(file, req: Request): Promise<Avatar> {

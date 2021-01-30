@@ -7,6 +7,7 @@ import LoginRequestDto from './dtos/login-request.dto';
 import LoginResponseDto from './dtos/login-response.dto';
 import SessionTokenDataDto from './dtos/session-token-data.dto';
 import { UsersService } from 'src/users/users.service';
+import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
 
 @Injectable()
 export class AuthService {
@@ -37,12 +38,7 @@ export class AuthService {
     const cookie = `AuthSession=${token}; HttpOnly; Path=/; Expires=${expireDate}`;
     req.res.setHeader('Set-Cookie', cookie);
     const { password: _password, ...rest } = storedUser;
-    if (rest.avatar) {
-      rest.avatar = {
-        ...rest.avatar,
-        blob: Buffer.from(rest.avatar.blob, 'base64').toString('ascii'),
-      };
-    }
+    rest.avatar = updateBlobToBase64(rest.avatar);
     return {
       ok: true,
       data: rest,

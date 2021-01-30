@@ -1,6 +1,5 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Buffer } from 'buffer';
 import { Request } from 'express';
 import * as sharp from 'sharp';
 import { AuthService } from 'src/auth/auth.service';
@@ -12,6 +11,7 @@ import CreateNpcDto from './dtos/create-npc.dto';
 import NpcFilterDto from './dtos/npc-filter.dto';
 import UpdateNpcDto from './dtos/update-npc.dto';
 import Npc from './npc.entity';
+import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
 
 @Injectable()
 export class NpcsService {
@@ -30,10 +30,7 @@ export class NpcsService {
       .leftJoinAndSelect(`${npcAlias}.${uploaderAlias}`, uploaderAlias)
       .where(...NpcFilterDto.where(filterDto, npcAlias))
       .getMany();
-    return npcList.map((npc) => ({
-      ...npc,
-      blob: Buffer.from(npc.blob, 'base64').toString('ascii'),
-    }));
+    return npcList.map((npc) => updateBlobToBase64(npc));
   }
 
   async createNpc(file, npc: CreateNpcDto, req: Request): Promise<Npc> {
@@ -76,22 +73,12 @@ export class NpcsService {
       .leftJoinAndSelect(`${uploaderAlias}.${avatarAlias}`, avatarAlias)
       .where(`${npcAlias}.id = :id`, { id })
       .getOne();
-    if (updatedNpc.uploader.avatar) {
-      updatedNpc.uploader.avatar = {
-        ...updatedNpc.uploader.avatar,
-        blob: Buffer.from(updatedNpc.uploader.avatar.blob, 'base64').toString(
-          'ascii',
-        ),
-      };
-    }
+    updatedNpc.uploader.avatar = updateBlobToBase64(updatedNpc.uploader.avatar);
 
     if (!updatedNpc) {
       throw new NpcNotFoundException(id);
     }
-    return {
-      ...updatedNpc,
-      blob: Buffer.from(updatedNpc.blob, 'base64').toString('ascii'),
-    };
+    return updateBlobToBase64(updatedNpc);
   }
 
   async deleteNpc(id: string): Promise<DeleteResult> {

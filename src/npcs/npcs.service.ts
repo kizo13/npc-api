@@ -1,14 +1,11 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Buffer } from 'buffer';
 import { Request } from 'express';
 import * as sharp from 'sharp';
 import { AuthService } from 'src/auth/auth.service';
 import SessionTokenDataDto from 'src/auth/dtos/session-token-data.dto';
+import NpcNotFoundException from 'src/_shared/exceptions/npc-not-found.exception';
 import { DeleteResult, Repository } from 'typeorm';
 import CreateNpcDto from './dtos/create-npc.dto';
 import NpcFilterDto from './dtos/npc-filter.dto';
@@ -60,12 +57,12 @@ export class NpcsService {
     return newNpc;
   }
 
-  async updateNpc(id: number, npc: UpdateNpcDto): Promise<Npc> {
+  async updateNpc(id: string, npc: UpdateNpcDto): Promise<Npc> {
     await this.npcRepository.update(id, { ...npc });
 
     const updatedNpc = await this.npcRepository.findOne(id);
     if (!updatedNpc) {
-      throw new NotFoundException(`NPC with id ${id} not found`);
+      throw new NpcNotFoundException(id);
     }
     return {
       ...updatedNpc,
@@ -73,7 +70,12 @@ export class NpcsService {
     };
   }
 
-  deleteNpc(id: number): Promise<DeleteResult> {
-    return this.npcRepository.delete(id);
+  async deleteNpc(id: string): Promise<DeleteResult> {
+    const result = await this.npcRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NpcNotFoundException(id);
+    }
+
+    return;
   }
 }

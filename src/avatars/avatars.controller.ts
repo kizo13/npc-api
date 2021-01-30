@@ -2,6 +2,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
   Param,
   Post,
   Req,
@@ -12,13 +13,17 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import FindOneParams from 'src/_shared/classes/find-one-param';
 import { AuthGuard } from 'src/_shared/guards/auth.guard';
+import FileService from 'src/_shared/services/file.service';
 import Avatar from './avatar.entity';
 import { AvatarsService } from './avatars.service';
 
 @UseGuards(AuthGuard)
 @Controller('avatars')
 export class AvatarsController {
-  constructor(private readonly avatarsService: AvatarsService) {}
+  constructor(
+    private readonly avatarsService: AvatarsService,
+    private readonly fileService: FileService,
+  ) {}
 
   @Get()
   getUsers(): Promise<Avatar[]> {
@@ -27,12 +32,14 @@ export class AvatarsController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  createAvatar(@UploadedFile() file, @Req() req) {
+  async createAvatar(@UploadedFile() file, @Req() req) {
+    await this.fileService.checkMimeType(file);
     return this.avatarsService.createAvatar(file, req);
   }
 
   @Delete(':id')
+  @HttpCode(204)
   deleteAvatar(@Param() { id }: FindOneParams) {
-    return this.avatarsService.deleteAvatar(Number(id));
+    return this.avatarsService.deleteAvatar(id);
   }
 }

@@ -1,8 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
 import { Request } from 'express';
@@ -11,6 +7,8 @@ import Avatar from './avatar.entity';
 import SessionTokenDataDto from 'src/auth/dtos/session-token-data.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
+import UserNotFoundException from 'src/_shared/exceptions/user-not-found.exception';
+import AvatarNotFoundException from 'src/_shared/exceptions/avatar-not-found.exception';
 
 @Injectable()
 export class AvatarsService {
@@ -38,11 +36,11 @@ export class AvatarsService {
 
     const uploader = await this.usersService.findOne(String(userData.id));
     if (!uploader) {
-      throw new NotFoundException(`User with id ${userData.id} not found`);
+      throw new UserNotFoundException(String(userData.id));
     }
 
     const resizedImageBuffer = await sharp(file.buffer)
-      .resize(450, 450, { fit: 'inside' })
+      .resize(250, 250, { fit: 'inside' })
       .toBuffer();
     const blob = resizedImageBuffer.toString('base64');
     const newAvatar = this.avatarRepository.create({
@@ -53,7 +51,12 @@ export class AvatarsService {
     return newAvatar;
   }
 
-  deleteAvatar(id: number): Promise<DeleteResult> {
-    return this.avatarRepository.delete(id);
+  async deleteAvatar(id: string): Promise<DeleteResult> {
+    const result = await this.avatarRepository.delete(id);
+    if (result.affected === 0) {
+      throw new AvatarNotFoundException(id);
+    }
+
+    return;
   }
 }

@@ -6,6 +6,7 @@ import Avatar from './avatar.entity';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from 'src/auth/auth.module';
 import { UsersModule } from 'src/users/users.module';
+import FileService from 'src/_shared/services/file.service';
 
 @Module({
   imports: [
@@ -15,6 +16,6 @@ import { UsersModule } from 'src/users/users.module';
     UsersModule,
   ],
   controllers: [AvatarsController],
-  providers: [AvatarsService],
+  providers: [AvatarsService, FileService],
 })
 export class AvatarsModule {}

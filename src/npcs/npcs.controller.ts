@@ -36,6 +36,11 @@ export class NpcsController {
     return this.npcsService.findAll(filterDto);
   }
 
+  @Get('classes')
+  getClasses(): Promise<string[]> {
+    return this.npcsService.getClasses();
+  }
+
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async createNpc(@UploadedFile() file, @Body() npc: CreateNpcDto, @Req() req) {

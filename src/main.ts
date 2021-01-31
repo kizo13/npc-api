@@ -15,6 +15,8 @@ async function bootstrap() {
   app.use(compression());
   app.use(cookieParser());
 
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+
   await app.listen(port, async () => {
     const url = await app.getUrl();
     const address = `http://${url}:${port}/`;

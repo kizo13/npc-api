@@ -15,6 +15,7 @@ import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
 import NpcsPaginationDto from './dtos/npcs-pagination.dto';
 import NpcsPaginatedDto from './dtos/npcs-paginated.dto';
 import PaginationOrder from 'src/_shared/enums/pagination-order.enum';
+import { CultureEnums } from 'src/_shared/enums/culture.enums';
 
 @Injectable()
 export class NpcsService {
@@ -122,5 +123,9 @@ export class NpcsService {
       .where(`${npcAlias}.class like :class`, { class: `%${filter}%` })
       .getMany();
     return npcList.map((npc) => npc.class);
+  }
+
+  getCultures(): string[] {
+    return Object.values(CultureEnums);
   }
 }

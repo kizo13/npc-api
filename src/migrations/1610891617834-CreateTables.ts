@@ -180,6 +180,43 @@ export class CreateTables1610891617834 implements MigrationInterface {
       true,
     );
 
+    // NAME TABLE
+    await queryRunner.createTable(
+      new Table({
+        name: db.NAME_TABLE,
+        columns: [
+          {
+            name: db.NAME_COLUMN_ID,
+            type: 'int',
+            isPrimary: true,
+            isNullable: false,
+            isGenerated: true,
+            isUnique: true,
+            generationStrategy: 'increment',
+          },
+          {
+            name: db.NAME_COLUMN_CULTURE,
+            type: 'varchar',
+            length: '15',
+          },
+          {
+            name: db.NAME_COLUMN_MALE_FIRSTNAMES,
+            type: 'text',
+          },
+          {
+            name: db.NAME_COLUMN_FEMALE_FIRSTNAMES,
+            type: 'text',
+          },
+          {
+            name: db.NAME_COLUMN_SURNAMES,
+            type: 'text',
+            isNullable: true,
+          },
+        ],
+      }),
+      true,
+    );
+
     // AVATAR FK
     await queryRunner.addColumn(
       db.AVATAR_TABLE,

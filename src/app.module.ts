@@ -9,6 +9,7 @@ import { UsersModule } from './users/users.module';
 import { MetaModule } from './meta/meta.module';
 import { NotesModule } from './notes/notes.module';
 import { AvatarsModule } from './avatars/avatars.module';
+import { NamesModule } from './names/names.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { AvatarsModule } from './avatars/avatars.module';
     UsersModule,
     NotesModule,
     AvatarsModule,
+    NamesModule,
   ],
   controllers: [AppController],
 })

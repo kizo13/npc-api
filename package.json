@@ -40,6 +40,7 @@
     "class-validator": "^0.13.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.5",
+    "foswig": "^3.0.1",
     "helmet": "^4.4.1",
     "jwt-simple": "^0.5.6",
     "mmmagic": "^0.5.3",

@@ -36,4 +36,11 @@ export enum DbEnums {
   NOTE_COLUMN_MODIFIED_BY_ID = 'modifiedById',
   NOTE_COLUMN_CREATED_AT = 'createdAt',
   NOTE_COLUMN_MODIFIED_AT = 'modifiedAt',
+
+  NAME_TABLE = 'name',
+  NAME_COLUMN_ID = 'id',
+  NAME_COLUMN_CULTURE = 'culture',
+  NAME_COLUMN_MALE_FIRSTNAMES = 'males',
+  NAME_COLUMN_FEMALE_FIRSTNAMES = 'females',
+  NAME_COLUMN_SURNAMES = 'surnames',
 }

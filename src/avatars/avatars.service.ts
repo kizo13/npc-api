@@ -48,7 +48,7 @@ export class AvatarsService {
     }
 
     const resizedImageBuffer = await sharp(file.buffer)
-      .resize(250, 250, { fit: 'inside', withoutEnlargement: true })
+      .resize(128, 128, { fit: 'inside', withoutEnlargement: true })
       .toBuffer();
     const blob = resizedImageBuffer.toString('base64');
     const newAvatar = this.avatarRepository.create({

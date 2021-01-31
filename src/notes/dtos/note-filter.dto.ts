@@ -7,6 +7,7 @@ class NoteFilterDto {
   public description: string;
 
   @IsString()
+  @IsOptional()
   @IsEnum(GenderType, {
     message: `type must be a valid enum value: '${
       GenderType[GenderType.MALE]
@@ -46,37 +47,37 @@ class NoteFilterDto {
     const whereStrParts = [];
     const whereParams: Record<string, unknown> = {};
 
-    if (filterDto.gender) {
+    if (filterDto?.gender) {
       whereStrParts.push(`${npcAlias}.gender = :gender`);
       whereParams.gender = filterDto.gender;
     }
 
-    if (filterDto.class) {
+    if (filterDto?.class) {
       whereStrParts.push(`${npcAlias}.class = :class`);
       whereParams.class = filterDto.class;
     }
 
-    if (filterDto.age) {
+    if (filterDto?.age) {
       whereStrParts.push(`${npcAlias}.age = :age`);
       whereParams.age = filterDto.age;
     }
 
-    if (filterDto.race) {
+    if (filterDto?.race) {
       whereStrParts.push(`${npcAlias}.race = :race`);
       whereParams.race = filterDto.race;
     }
 
-    if (filterDto.culture) {
+    if (filterDto?.culture) {
       whereStrParts.push(`${npcAlias}.culture = :culture`);
       whereParams.culture = filterDto.culture;
     }
 
-    if (filterDto.name) {
+    if (filterDto?.name) {
       whereStrParts.push(`${npcAlias}.name ILIKE :name`);
       whereParams.name = `%${filterDto.name}%`;
     }
 
-    if (filterDto.uploaderId) {
+    if (filterDto?.uploaderId) {
       whereStrParts.push(`"${createdByAlias}"."id" = :uploaderId`);
       whereParams.uploaderId = filterDto.uploaderId;
     }

@@ -12,6 +12,9 @@ import NpcFilterDto from './dtos/npc-filter.dto';
 import UpdateNpcDto from './dtos/update-npc.dto';
 import Npc from './npc.entity';
 import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
+import NpcsPaginationDto from './dtos/npcs-pagination.dto';
+import NpcsPaginatedDto from './dtos/npcs-paginated.dto';
+import PaginationOrder from 'src/_shared/enums/pagination-order.enum';
 
 @Injectable()
 export class NpcsService {
@@ -22,15 +25,35 @@ export class NpcsService {
     private readonly usersService: UsersService,
   ) {}
 
-  async findAll(filterDto: NpcFilterDto): Promise<Npc[]> {
+  async findAll(
+    paginationDto: NpcsPaginationDto,
+    filterDto: NpcFilterDto,
+  ): Promise<NpcsPaginatedDto> {
     const npcAlias = 'npc';
     const uploaderAlias = 'uploader';
-    const npcList = await this.npcRepository
+
+    const offset = (paginationDto.page - 1) * paginationDto.limit;
+    paginationDto.sort = !paginationDto.sort
+      ? `${npcAlias}.createdAt`
+      : `${npcAlias}.${paginationDto.sort}`;
+    paginationDto.order =
+      paginationDto.order || PaginationOrder[PaginationOrder.DESC];
+
+    const [npcList, totalCount] = await this.npcRepository
       .createQueryBuilder(npcAlias)
       .leftJoinAndSelect(`${npcAlias}.${uploaderAlias}`, uploaderAlias)
       .where(...NpcFilterDto.where(filterDto, npcAlias))
-      .getMany();
-    return npcList.map((npc) => updateBlobToBase64(npc));
+      .orderBy(paginationDto.sort, paginationDto.order)
+      .skip(offset || 0)
+      .take(paginationDto.limit)
+      .getManyAndCount();
+
+    return {
+      totalCount,
+      page: paginationDto.page,
+      limit: paginationDto.limit,
+      data: npcList.map((npc) => updateBlobToBase64(npc)),
+    };
   }
 
   async createNpc(file, npc: CreateNpcDto, req: Request): Promise<Npc> {

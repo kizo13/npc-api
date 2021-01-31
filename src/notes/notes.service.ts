@@ -12,6 +12,9 @@ import NoteNotFoundException from 'src/_shared/exceptions/note-not-found.excepti
 import { UsersService } from 'src/users/users.service';
 import UserNotFoundException from 'src/_shared/exceptions/user-not-found.exception';
 import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
+import NotesPaginationDto from './dtos/notes-pagination.dto';
+import PaginationOrder from 'src/_shared/enums/pagination-order.enum';
+import NotesPaginatedDto from './dtos/notes-paginated.dto';
 
 @Injectable()
 export class NotesService {
@@ -22,25 +25,42 @@ export class NotesService {
     private readonly usersService: UsersService,
   ) {}
 
-  async findAll(filterDto: NoteFilterDto): Promise<Note[]> {
+  async findAll(
+    paginationDto: NotesPaginationDto,
+    filterDto: NoteFilterDto,
+  ): Promise<NotesPaginatedDto> {
     const noteAlias = 'note';
     const npcAlias = 'npc';
     const createdByAlias = 'createdBy';
     const modifiedByAlias = 'modifiedBy';
-    const noteList = await this.noteRepository
+
+    const offset = (paginationDto.page - 1) * paginationDto.limit;
+    paginationDto.sort = !paginationDto.sort
+      ? `${noteAlias}.createdAt`
+      : `${noteAlias}.${paginationDto.sort}`;
+    paginationDto.order =
+      paginationDto.order || PaginationOrder[PaginationOrder.DESC];
+
+    const [noteList, totalCount] = await this.noteRepository
       .createQueryBuilder(noteAlias)
       .leftJoinAndSelect(`${noteAlias}.${npcAlias}`, npcAlias)
       .leftJoinAndSelect(`${noteAlias}.${createdByAlias}`, createdByAlias)
       .leftJoinAndSelect(`${noteAlias}.${modifiedByAlias}`, modifiedByAlias)
       .where(...NoteFilterDto.where(filterDto, npcAlias, createdByAlias))
-      .getMany();
+      .orderBy(paginationDto.sort, paginationDto.order)
+      .skip(offset || 0)
+      .take(paginationDto.limit)
+      .getManyAndCount();
 
-    return noteList.map((note) => {
-      return {
+    return {
+      totalCount,
+      page: paginationDto.page,
+      limit: paginationDto.limit,
+      data: noteList.map((note) => ({
         ...note,
         npc: updateBlobToBase64(note.npc),
-      };
-    });
+      })),
+    };
   }
 
   async createNote(note: CreateNoteDto, req: Request): Promise<Note> {

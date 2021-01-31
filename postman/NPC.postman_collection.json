@@ -202,7 +202,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/npcs",
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/npcs?sort=id&order=DESC&page=1&limit=2&filter[uploaderId]=1",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -212,6 +212,53 @@
 						"api",
 						"{{api-version}}",
 						"npcs"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "id"
+						},
+						{
+							"key": "order",
+							"value": "DESC"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "2"
+						},
+						{
+							"key": "filter[gender]",
+							"value": "MALE",
+							"disabled": true
+						},
+						{
+							"key": "filter[class]",
+							"value": "soldier",
+							"disabled": true
+						},
+						{
+							"key": "filter[age]",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "filter[race]",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "filter[culture]",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "filter[uploaderId]",
+							"value": "1"
+						}
 					]
 				}
 			},
@@ -335,7 +382,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/notes",
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/notes?sort=createdAt&order=DESC&page=1&limit=2&filter[uploaderId]=1",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -345,6 +392,58 @@
 						"api",
 						"{{api-version}}",
 						"notes"
+					],
+					"query": [
+						{
+							"key": "sort",
+							"value": "createdAt"
+						},
+						{
+							"key": "order",
+							"value": "DESC"
+						},
+						{
+							"key": "page",
+							"value": "1"
+						},
+						{
+							"key": "limit",
+							"value": "2"
+						},
+						{
+							"key": "filter[gender]",
+							"value": "MALE",
+							"disabled": true
+						},
+						{
+							"key": "filter[class]",
+							"value": "soldier",
+							"disabled": true
+						},
+						{
+							"key": "filter[age]",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "filter[race]",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "filter[culture]",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "filter[name]",
+							"value": null,
+							"disabled": true
+						},
+						{
+							"key": "filter[uploaderId]",
+							"value": "1"
+						}
 					]
 				}
 			},

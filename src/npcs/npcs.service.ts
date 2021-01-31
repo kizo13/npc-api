@@ -48,7 +48,7 @@ export class NpcsService {
     if (!storedUser) throw new UnauthorizedException();
 
     const resizedImageBuffer = await sharp(file.buffer)
-      .resize(450, 450, { fit: 'inside' })
+      .resize(450, 450, { fit: 'inside', withoutEnlargement: true })
       .toBuffer();
     const blob = resizedImageBuffer.toString('base64');
     const newNpc = this.npcRepository.create({

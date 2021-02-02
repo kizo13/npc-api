@@ -202,7 +202,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/npcs?sort=id&order=DESC&page=1&limit=2&filter[uploaderId]=1",
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/npcs?sort=id&order=DESC&page=1&limit=2",
 					"protocol": "http",
 					"host": [
 						"{{host}}"
@@ -257,7 +257,8 @@
 						},
 						{
 							"key": "filter[uploaderId]",
-							"value": "1"
+							"value": "1",
+							"disabled": true
 						}
 					]
 				}
@@ -601,6 +602,74 @@
 						"{{api-version}}",
 						"avatars",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get generated name list",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/names/generate-list?gender=MALE&culture=aszisz&count=15",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"names",
+						"generate-list"
+					],
+					"query": [
+						{
+							"key": "gender",
+							"value": "MALE"
+						},
+						{
+							"key": "culture",
+							"value": "aszisz"
+						},
+						{
+							"key": "count",
+							"value": "15"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a generated name",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://{{host}}:{{port}}/api/{{api-version}}/names/generate?gender=MALE&culture=aszisz",
+					"protocol": "http",
+					"host": [
+						"{{host}}"
+					],
+					"port": "{{port}}",
+					"path": [
+						"api",
+						"{{api-version}}",
+						"names",
+						"generate"
+					],
+					"query": [
+						{
+							"key": "gender",
+							"value": "MALE"
+						},
+						{
+							"key": "culture",
+							"value": "aszisz"
+						}
 					]
 				}
 			},

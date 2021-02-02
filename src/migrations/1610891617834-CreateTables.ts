@@ -1,3 +1,5 @@
+import { AgeEnums } from 'src/_shared/enums/age.enums';
+import { CultureEnums } from 'src/_shared/enums/culture.enums';
 import {
   MigrationInterface,
   QueryRunner,
@@ -109,8 +111,8 @@ export class CreateTables1610891617834 implements MigrationInterface {
           },
           {
             name: db.NPC_COLUMN_AGE,
-            type: 'varchar',
-            length: '15',
+            type: 'enum',
+            enum: Object.values(AgeEnums),
             isNullable: true,
           },
           {
@@ -121,8 +123,8 @@ export class CreateTables1610891617834 implements MigrationInterface {
           },
           {
             name: db.NPC_COLUMN_CULTURE,
-            type: 'varchar',
-            length: '15',
+            type: 'enum',
+            enum: Object.values(CultureEnums),
             isNullable: true,
           },
           {

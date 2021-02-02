@@ -1,4 +1,6 @@
 import { User } from 'src/users/user.entity';
+import { AgeEnums } from 'src/_shared/enums/age.enums';
+import { CultureEnums } from 'src/_shared/enums/culture.enums';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
@@ -15,13 +17,19 @@ class Npc {
   @Column()
   public class: string;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: AgeEnums,
+  })
   public age: string;
 
   @Column()
   public race: string;
 
-  @Column()
+  @Column({
+    type: 'enum',
+    enum: CultureEnums,
+  })
   public culture: string;
 
   @ManyToOne(() => User)

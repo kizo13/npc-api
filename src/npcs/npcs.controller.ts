@@ -48,11 +48,6 @@ export class NpcsController {
     return this.npcsService.getClasses(filter);
   }
 
-  @Get('cultures')
-  getCultures(): string[] {
-    return this.npcsService.getCultures();
-  }
-
   @Post()
   @UseInterceptors(FileInterceptor('file'))
   async createNpc(@UploadedFile() file, @Body() npc: CreateNpcDto, @Req() req) {

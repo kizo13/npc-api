@@ -1,10 +1,10 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
-import { AuthGuard } from 'src/_shared/guards/auth.guard';
+import { JwtAuthGuard } from 'src/_shared/guards/jwt-auth.guard';
 import NameGeneratorFilter from './dtos/name-generator-filter.dto';
 import NameListGeneratorFilter from './dtos/name-list-generator-filter.dto';
 import { NamesService } from './names.service';
 
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('names')
 export class NamesController {
   constructor(private readonly namesService: NamesService) {}

@@ -1,11 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
-import { Request } from 'express';
 import Note from './note.entity';
 import NoteFilterDto from './dtos/note-filter.dto';
 import CreateNoteDto from './dtos/create-note.dto';
-import SessionTokenDataDto from 'src/auth/dtos/session-token-data.dto';
 import { AuthService } from 'src/auth/auth.service';
 import UpdateNoteDto from './dtos/update-note.dto';
 import NoteNotFoundException from 'src/_shared/exceptions/note-not-found.exception';
@@ -63,21 +61,11 @@ export class NotesService {
     };
   }
 
-  async createNote(note: CreateNoteDto, req: Request): Promise<Note> {
-    const authSessionCookie = req.cookies && req.cookies['AuthSession'];
-    if (!authSessionCookie) throw new UnauthorizedException();
-
-    let userData: SessionTokenDataDto;
-    try {
-      userData = this.authService.decodeToken(authSessionCookie);
-    } catch (error) {
-      throw new UnauthorizedException();
-    }
-
-    const createdBy = await this.usersService.findOne(String(userData.id));
+  async createNote(note: CreateNoteDto, userId: number): Promise<Note> {
+    const createdBy = await this.usersService.findOne(String(userId));
     createdBy.avatar = updateBlobToBase64(createdBy.avatar);
     if (!createdBy) {
-      throw new UserNotFoundException(String(userData.id));
+      throw new UserNotFoundException(String(userId));
     }
 
     const newNote = this.noteRepository.create({
@@ -92,20 +80,11 @@ export class NotesService {
   async updateNote(
     id: string,
     note: UpdateNoteDto,
-    req: Request,
+    userId: number,
   ): Promise<Note> {
-    const authSessionCookie = req.cookies && req.cookies['AuthSession'];
-    if (!authSessionCookie) throw new UnauthorizedException();
-
-    let userData: SessionTokenDataDto;
-    try {
-      userData = this.authService.decodeToken(authSessionCookie);
-    } catch (error) {
-      throw new UnauthorizedException();
-    }
-    const modifiedBy = await this.usersService.findOne(String(userData.id));
+    const modifiedBy = await this.usersService.findOne(String(userId));
     if (!modifiedBy) {
-      throw new UserNotFoundException(String(userData.id));
+      throw new UserNotFoundException(String(userId));
     }
     await this.noteRepository.update(id, {
       ...note,

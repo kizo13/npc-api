@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as argon2 from 'argon2';
+import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
 import UpdateUserDto from './dtos/update-user.dto';
 import UserNotFoundException from 'src/_shared/exceptions/user-not-found.exception';
@@ -72,5 +73,47 @@ export class UsersService {
     }
 
     return;
+  }
+
+  async validateUser(email: string, password: string): Promise<User> {
+    const storedUser = await this.findOneByEmail(email);
+    if (!storedUser) {
+      return null;
+    }
+    const isVerified = await argon2.verify(storedUser.password, password);
+    if (!isVerified) {
+      return null;
+    }
+    return storedUser;
+  }
+
+  async updateRefreshToken(id: string, refreshToken: string) {
+    const result = await this.usersRepository.update(id, { refreshToken });
+    if (result.affected === 0) {
+      throw new UserNotFoundException(id);
+    }
+    return;
+  }
+
+  async getUserIfRefreshTokenMatches(id: string, refreshToken: string) {
+    const userAlias = 'user';
+    const user = await this.usersRepository
+      .createQueryBuilder(userAlias)
+      .addSelect(`${userAlias}.refreshToken`)
+      .where(`"${userAlias}".id = :id`, { id })
+      .getOne();
+
+    if (!user || (user && user.refreshToken === null)) {
+      throw new UnauthorizedException();
+    }
+
+    const isRefreshTokenMatching = await bcrypt.compare(
+      refreshToken,
+      user.refreshToken,
+    );
+    if (!isRefreshTokenMatching) {
+      throw new UnauthorizedException();
+    }
+    return user;
   }
 }

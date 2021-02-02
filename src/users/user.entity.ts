@@ -24,6 +24,9 @@ export class User {
   @Column({ default: true })
   isActive: boolean;
 
+  @Column({ select: false })
+  refreshToken: string;
+
   @OneToOne(() => Avatar, { eager: true })
   @JoinColumn()
   avatar: Avatar;

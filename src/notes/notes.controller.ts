@@ -14,7 +14,8 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import FindOneParams from 'src/_shared/classes/find-one-param';
-import { AuthGuard } from 'src/_shared/guards/auth.guard';
+import RequestWithUser from 'src/_shared/dtos/request-with-user.dto';
+import { JwtAuthGuard } from 'src/_shared/guards/jwt-auth.guard';
 import CreateNoteDto from './dtos/create-note.dto';
 import NoteFilterDto from './dtos/note-filter.dto';
 import NotesPaginatedDto from './dtos/notes-paginated.dto';
@@ -22,7 +23,7 @@ import NotesPaginationDto from './dtos/notes-pagination.dto';
 import UpdateNoteDto from './dtos/update-note.dto';
 import { NotesService } from './notes.service';
 
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('notes')
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
@@ -37,17 +38,17 @@ export class NotesController {
   }
 
   @Post()
-  async createNpc(@Body() npc: CreateNoteDto, @Req() req) {
-    return this.notesService.createNote(npc, req);
+  async createNpc(@Body() npc: CreateNoteDto, @Req() request: RequestWithUser) {
+    return this.notesService.createNote(npc, request.user.id);
   }
 
   @Put(':id')
   updateNpc(
     @Param() { id }: FindOneParams,
     @Body() note: UpdateNoteDto,
-    @Req() req,
+    @Req() request: RequestWithUser,
   ) {
-    return this.notesService.updateNote(id, note, req);
+    return this.notesService.updateNote(id, note, request.user.id);
   }
 
   @Delete(':id')

@@ -9,13 +9,12 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import FindOneParams from 'src/_shared/classes/find-one-param';
-import { AdminOnly } from 'src/_shared/decorators/admin-only.decorator';
-import { AuthGuard } from 'src/_shared/guards/auth.guard';
+import { JwtAuthGuard } from 'src/_shared/guards/jwt-auth.guard';
 import UpdateUserDto from './dtos/update-user.dto';
 import { User } from './user.entity';
 import { UsersService } from './users.service';
 
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
@@ -40,7 +39,6 @@ export class UsersController {
 
   @Delete(':id')
   @HttpCode(204)
-  @AdminOnly()
   deleteUser(@Param('id') id: string) {
     return this.usersService.deleteUser(id);
   }

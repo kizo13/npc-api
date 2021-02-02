@@ -1,7 +1,7 @@
 class SessionTokenDataDto {
-  id: number;
-  email: string;
-  expires: Date;
+  sub: number;
+  iat?: number;
+  exp?: number;
 }
 
 export default SessionTokenDataDto;

@@ -17,7 +17,8 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import FindOneParams from 'src/_shared/classes/find-one-param';
-import { AuthGuard } from 'src/_shared/guards/auth.guard';
+import RequestWithUser from 'src/_shared/dtos/request-with-user.dto';
+import { JwtAuthGuard } from 'src/_shared/guards/jwt-auth.guard';
 import FileService from 'src/_shared/services/file.service';
 import CreateNpcDto from './dtos/create-npc.dto';
 import NpcFilterDto from './dtos/npc-filter.dto';
@@ -26,7 +27,7 @@ import NpcsPaginationDto from './dtos/npcs-pagination.dto';
 import UpdateNpcDto from './dtos/update-npc.dto';
 import { NpcsService } from './npcs.service';
 
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('npcs')
 export class NpcsController {
   constructor(
@@ -50,9 +51,13 @@ export class NpcsController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async createNpc(@UploadedFile() file, @Body() npc: CreateNpcDto, @Req() req) {
+  async createNpc(
+    @UploadedFile() file,
+    @Body() npc: CreateNpcDto,
+    @Req() request: RequestWithUser,
+  ) {
     await this.fileService.checkMimeType(file);
-    return this.npcsService.createNpc(file, npc, req);
+    return this.npcsService.createNpc(file, npc, request.user.id);
   }
 
   @Put(':id')

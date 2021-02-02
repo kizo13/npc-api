@@ -1,8 +1,7 @@
-import { User } from 'src/users/user.entity';
+import TokenResponseDto from './token-response.dto';
 
-class LoginResponseDto {
-  ok: boolean;
-  data: Omit<User, 'password'>;
+class LoginResponseDto extends TokenResponseDto {
+  refresh_token: string;
 }
 
 export default LoginResponseDto;

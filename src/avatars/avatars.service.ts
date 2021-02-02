@@ -1,10 +1,8 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DeleteResult, Repository } from 'typeorm';
-import { Request } from 'express';
 import * as sharp from 'sharp';
 import Avatar from './avatar.entity';
-import SessionTokenDataDto from 'src/auth/dtos/session-token-data.dto';
 import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
 import UserNotFoundException from 'src/_shared/exceptions/user-not-found.exception';
@@ -31,20 +29,10 @@ export class AvatarsService {
     return avatarList.map((avatar) => updateBlobToBase64(avatar));
   }
 
-  async createAvatar(file, req: Request): Promise<Avatar> {
-    const authSessionCookie = req.cookies && req.cookies['AuthSession'];
-    if (!authSessionCookie) throw new UnauthorizedException();
-
-    let userData: SessionTokenDataDto;
-    try {
-      userData = this.authService.decodeToken(authSessionCookie);
-    } catch (error) {
-      throw new UnauthorizedException();
-    }
-
-    const uploader = await this.usersService.findOne(String(userData.id));
+  async createAvatar(file, userId: number): Promise<Avatar> {
+    const uploader = await this.usersService.findOne(String(userId));
     if (!uploader) {
-      throw new UserNotFoundException(String(userData.id));
+      throw new UserNotFoundException(String(userId));
     }
 
     const resizedImageBuffer = await sharp(file.buffer)

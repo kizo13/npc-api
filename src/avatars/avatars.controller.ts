@@ -12,12 +12,13 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import FindOneParams from 'src/_shared/classes/find-one-param';
-import { AuthGuard } from 'src/_shared/guards/auth.guard';
+import RequestWithUser from 'src/_shared/dtos/request-with-user.dto';
+import { JwtAuthGuard } from 'src/_shared/guards/jwt-auth.guard';
 import FileService from 'src/_shared/services/file.service';
 import Avatar from './avatar.entity';
 import { AvatarsService } from './avatars.service';
 
-@UseGuards(AuthGuard)
+@UseGuards(JwtAuthGuard)
 @Controller('avatars')
 export class AvatarsController {
   constructor(
@@ -32,9 +33,9 @@ export class AvatarsController {
 
   @Post()
   @UseInterceptors(FileInterceptor('file'))
-  async createAvatar(@UploadedFile() file, @Req() req) {
+  async createAvatar(@UploadedFile() file, @Req() request: RequestWithUser) {
     await this.fileService.checkMimeType(file);
-    return this.avatarsService.createAvatar(file, req);
+    return this.avatarsService.createAvatar(file, request.user.id);
   }
 
   @Delete(':id')

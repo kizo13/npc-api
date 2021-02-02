@@ -74,6 +74,12 @@ export class CreateTables1610891617834 implements MigrationInterface {
             name: db.USER_COLUMN_ISACTIVE,
             type: 'boolean',
           },
+          {
+            name: db.USER_COLUMN_REFRESH_TOKEN,
+            type: 'varchar',
+            length: '200',
+            isNullable: true,
+          },
         ],
       }),
       true,

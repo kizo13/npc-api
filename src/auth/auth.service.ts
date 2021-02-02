@@ -1,51 +1,67 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { Request } from 'express';
-import * as argon2 from 'argon2';
-import * as jwt from 'jwt-simple';
+import { JwtService } from '@nestjs/jwt';
+import * as bcrypt from 'bcrypt';
 import LoginRequestDto from './dtos/login-request.dto';
 import LoginResponseDto from './dtos/login-response.dto';
 import SessionTokenDataDto from './dtos/session-token-data.dto';
 import { UsersService } from 'src/users/users.service';
 import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
+import TokenResponseDto from './dtos/token-response.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly configService: ConfigService,
+    private readonly jwtService: JwtService,
     private readonly usersService: UsersService,
   ) {}
 
-  async login(body: LoginRequestDto, req: Request): Promise<LoginResponseDto> {
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.usersService.validateUser(email, pass);
+    if (user) {
+      return user;
+    }
+    return null;
+  }
+
+  async login(body: LoginRequestDto): Promise<LoginResponseDto> {
     const storedUser = await this.usersService.findOneByEmail(body.email);
     if (!storedUser) throw new UnauthorizedException();
-    const isPassVerified = await argon2.verify(
-      storedUser.password,
-      body.password,
-    );
-    if (!isPassVerified) throw new UnauthorizedException();
 
-    const date = new Date();
-    const expireDate = new Date(
-      date.getTime() + this.configService.get('JWT_EXPIRATION_TIME') * 60000,
+    storedUser.avatar = updateBlobToBase64(storedUser.avatar);
+    const accessTokenPayload: SessionTokenDataDto = { sub: storedUser.id };
+    const refreshTokenPayload: SessionTokenDataDto = { sub: storedUser.id };
+    const refresh_token = this.jwtService.sign(refreshTokenPayload, {
+      secret: this.configService.get('JWT_REFRESH_TOKEN_SECRET'),
+      expiresIn: this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME'),
+    });
+    await this.usersService.updateRefreshToken(
+      `${storedUser.id}`,
+      bcrypt.hashSync(refresh_token, 10),
     );
-    const tokenData: SessionTokenDataDto = {
-      id: storedUser.id,
-      email: body.email,
-      expires: expireDate,
-    };
-    const token = jwt.encode(tokenData, this.configService.get('JWT_SECRET'));
-    const cookie = `AuthSession=${token}; HttpOnly; Path=/; Expires=${expireDate}`;
-    req.res.setHeader('Set-Cookie', cookie);
     const { password: _password, ...rest } = storedUser;
-    rest.avatar = updateBlobToBase64(rest.avatar);
     return {
-      ok: true,
+      access_token: this.jwtService.sign(accessTokenPayload),
+      refresh_token,
       data: rest,
     };
   }
 
-  decodeToken(token: string): SessionTokenDataDto {
-    return jwt.decode(token, this.configService.get('JWT_SECRET'));
+  async refresh(email: string): Promise<TokenResponseDto> {
+    const storedUser = await this.usersService.findOneByEmail(email);
+    if (!storedUser) throw new UnauthorizedException();
+
+    storedUser.avatar = updateBlobToBase64(storedUser.avatar);
+    const accessTokenPayload: SessionTokenDataDto = { sub: storedUser.id };
+    const { password: _password, ...rest } = storedUser;
+    return {
+      access_token: this.jwtService.sign(accessTokenPayload),
+      data: rest,
+    };
+  }
+
+  logout(id: string) {
+    return this.usersService.updateRefreshToken(id, null);
   }
 }

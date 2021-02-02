@@ -1,9 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Request } from 'express';
 import * as sharp from 'sharp';
 import { AuthService } from 'src/auth/auth.service';
-import SessionTokenDataDto from 'src/auth/dtos/session-token-data.dto';
 import { UsersService } from 'src/users/users.service';
 import NpcNotFoundException from 'src/_shared/exceptions/npc-not-found.exception';
 import { DeleteResult, Repository } from 'typeorm';
@@ -56,18 +54,8 @@ export class NpcsService {
     };
   }
 
-  async createNpc(file, npc: CreateNpcDto, req: Request): Promise<Npc> {
-    const authSessionCookie = req.cookies && req.cookies['AuthSession'];
-    if (!authSessionCookie) throw new UnauthorizedException();
-
-    let userData: SessionTokenDataDto;
-    try {
-      userData = this.authService.decodeToken(authSessionCookie);
-    } catch (error) {
-      throw new UnauthorizedException();
-    }
-
-    const storedUser = await this.usersService.findOne(String(userData.id));
+  async createNpc(file, npc: CreateNpcDto, userId: number): Promise<Npc> {
+    const storedUser = await this.usersService.findOne(String(userId));
     if (!storedUser) throw new UnauthorizedException();
 
     const resizedImageBuffer = await sharp(file.buffer)

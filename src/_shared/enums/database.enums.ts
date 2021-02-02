@@ -24,8 +24,9 @@ export enum DbEnums {
   USER_COLUMN_USERNAME = 'username',
   USER_COLUMN_EMAIL = 'email',
   USER_COLUMN_PASSWORD = 'password',
-  USER_COLUMN_AVATAR_ID = 'avatarId',
   USER_COLUMN_ISACTIVE = 'isActive',
+  USER_COLUMN_REFRESH_TOKEN = 'refreshToken',
+  USER_COLUMN_AVATAR_ID = 'avatarId',
 
   NOTE_TABLE = 'note',
   NOTE_COLUMN_ID = 'id',

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as sharp from 'sharp';
 import { AuthService } from 'src/auth/auth.service';
@@ -56,7 +56,7 @@ export class NpcsService {
 
   async createNpc(file, npc: CreateNpcDto, userId: number): Promise<Npc> {
     const storedUser = await this.usersService.findOne(String(userId));
-    if (!storedUser) throw new UnauthorizedException();
+    if (!storedUser) throw new ForbiddenException();
 
     const resizedImageBuffer = await sharp(file.buffer)
       .resize(450, 450, { fit: 'inside', withoutEnlargement: true })

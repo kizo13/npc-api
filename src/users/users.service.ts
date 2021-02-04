@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as argon2 from 'argon2';
@@ -104,7 +104,7 @@ export class UsersService {
       .getOne();
 
     if (!user || (user && user.refreshToken === null)) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     }
 
     const isRefreshTokenMatching = await bcrypt.compare(
@@ -112,7 +112,7 @@ export class UsersService {
       user.refreshToken,
     );
     if (!isRefreshTokenMatching) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException();
     }
     return user;
   }

@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -27,7 +27,7 @@ export class AuthService {
 
   async login(body: LoginRequestDto): Promise<LoginResponseDto> {
     const storedUser = await this.usersService.findOneByEmail(body.email);
-    if (!storedUser) throw new UnauthorizedException();
+    if (!storedUser) throw new ForbiddenException();
 
     storedUser.avatar = updateBlobToBase64(storedUser.avatar);
     const accessTokenPayload: SessionTokenDataDto = { sub: storedUser.id };
@@ -50,7 +50,7 @@ export class AuthService {
 
   async refresh(email: string): Promise<TokenResponseDto> {
     const storedUser = await this.usersService.findOneByEmail(email);
-    if (!storedUser) throw new UnauthorizedException();
+    if (!storedUser) throw new ForbiddenException();
 
     storedUser.avatar = updateBlobToBase64(storedUser.avatar);
     const accessTokenPayload: SessionTokenDataDto = { sub: storedUser.id };

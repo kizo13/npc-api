@@ -2,6 +2,7 @@ import { User } from 'src/users/user.entity';
 import { AgeEnums } from 'src/_shared/enums/age.enums';
 import { CultureEnums } from 'src/_shared/enums/culture.enums';
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import GenderType from './enums/gender-type.enum';
 
 @Entity()
 class Npc {
@@ -11,8 +12,11 @@ class Npc {
   @Column()
   public blob: string;
 
-  @Column()
-  public gender: string;
+  @Column({
+    type: 'enum',
+    enum: GenderType,
+  })
+  public gender: GenderType;
 
   @Column()
   public class: string;
@@ -21,7 +25,7 @@ class Npc {
     type: 'enum',
     enum: AgeEnums,
   })
-  public age: string;
+  public age: AgeEnums;
 
   @Column()
   public race: string;
@@ -30,7 +34,7 @@ class Npc {
     type: 'enum',
     enum: CultureEnums,
   })
-  public culture: string;
+  public culture: CultureEnums;
 
   @ManyToOne(() => User)
   public uploader: User;

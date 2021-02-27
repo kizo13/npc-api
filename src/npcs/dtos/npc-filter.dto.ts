@@ -86,7 +86,7 @@ class NpcFilterDto {
     }
 
     if (filterDto?.class) {
-      whereStrParts.push(`${npcAlias}.class = :class`);
+      whereStrParts.push(`ANY (${npcAlias}.class) = :class`);
       whereParams.class = filterDto.class;
     }
 

@@ -6,6 +6,7 @@ import GenderType from '../enums/gender-type.enum';
 
 class UpdateNpcDto {
   @IsString()
+  @IsOptional()
   @IsEnum(GenderType, {
     message: `type must be a valid enum value: '${
       GenderType[GenderType.MALE]
@@ -13,9 +14,9 @@ class UpdateNpcDto {
   })
   public gender: GenderType;
 
-  @IsString()
+  @IsString({ each: true })
   @IsOptional()
-  public class: string;
+  public class: string[];
 
   @IsString()
   @IsOptional()

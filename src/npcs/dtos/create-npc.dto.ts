@@ -13,9 +13,9 @@ class CreateNpcDto {
   })
   public gender: GenderType;
 
-  @IsString()
+  @IsString({ each: true })
   @IsOptional()
-  public class: string;
+  public class: string[];
 
   @IsString()
   @IsOptional()

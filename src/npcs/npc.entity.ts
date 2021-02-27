@@ -18,8 +18,8 @@ class Npc {
   })
   public gender: GenderType;
 
-  @Column()
-  public class: string;
+  @Column('text', { array: true })
+  public class: string[];
 
   @Column({
     type: 'enum',

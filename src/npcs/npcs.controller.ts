@@ -45,8 +45,8 @@ export class NpcsController {
   }
 
   @Get('classes')
-  getClasses(@Query('filter') filter: string): Promise<string[]> {
-    return this.npcsService.getClasses(filter);
+  getClasses(): Promise<string[]> {
+    return this.npcsService.getClasses();
   }
 
   @Post()

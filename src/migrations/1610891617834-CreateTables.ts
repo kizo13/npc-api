@@ -111,8 +111,8 @@ export class CreateTables1610891617834 implements MigrationInterface {
           },
           {
             name: db.NPC_COLUMN_CLASS,
-            type: 'varchar',
-            length: '15',
+            type: 'text',
+            isArray: true,
             isNullable: true,
           },
           {

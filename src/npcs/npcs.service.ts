@@ -100,15 +100,15 @@ export class NpcsService {
     return;
   }
 
-  async getClasses(filterQuery: string): Promise<string[]> {
-    const filter = filterQuery || '';
+  async getClasses(): Promise<string[]> {
     const npcAlias = 'npc';
     const npcList = await this.npcRepository
       .createQueryBuilder(npcAlias)
       .select([`${npcAlias}.class`])
-      .distinctOn([`${npcAlias}.class`])
-      .where(`${npcAlias}.class like :class`, { class: `%${filter}%` })
+      .where(`${npcAlias}.class IS NOT NULL`)
       .getMany();
-    return npcList.map((npc) => npc.class);
+    return npcList.reduce((acc, npc) => {
+      return [...acc, ...npc.class];
+    }, []);
   }
 }

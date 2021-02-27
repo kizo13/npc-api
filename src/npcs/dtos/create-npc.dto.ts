@@ -1,20 +1,10 @@
-import {
-  IsBase64,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsEnum, IsOptional, IsString } from 'class-validator';
 import { AgeEnums } from 'src/_shared/enums/age.enums';
 import { CultureEnums } from 'src/_shared/enums/culture.enums';
 import { RaceEnums } from 'src/_shared/enums/race.enums';
 import GenderType from '../enums/gender-type.enum';
 
 class CreateNpcDto {
-  @IsBase64()
-  @IsNotEmpty()
-  public blob: string;
-
   @IsString()
   @IsEnum(GenderType, {
     message: `type must be a valid enum value: '${
@@ -27,6 +17,8 @@ class CreateNpcDto {
   @IsOptional()
   public class: string;
 
+  @IsString()
+  @IsOptional()
   @IsEnum(AgeEnums, {
     message: `type must be a valid enum value: '${AgeEnums[AgeEnums.cat1]}', '${
       AgeEnums[AgeEnums.cat2]

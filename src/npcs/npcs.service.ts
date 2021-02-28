@@ -109,6 +109,7 @@ export class NpcsService {
       .getMany();
     return npcList
       .reduce((acc, npc) => [...acc, ...npc.class], [])
-      .filter((npc, i, arr) => arr.indexOf(npc) === i);
+      .filter((npc, i, arr) => arr.indexOf(npc) === i)
+      .sort();
   }
 }

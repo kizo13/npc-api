@@ -1,3 +1,4 @@
+import { Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { AgeEnums } from 'src/_shared/enums/age.enums';
 import { CultureEnums } from 'src/_shared/enums/culture.enums';
@@ -71,6 +72,7 @@ class NpcFilterDto {
 
   @IsNumber()
   @IsOptional()
+  @Type(() => Number)
   public uploaderId: number;
 
   static where(

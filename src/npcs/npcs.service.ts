@@ -107,8 +107,8 @@ export class NpcsService {
       .select([`${npcAlias}.class`])
       .where(`${npcAlias}.class IS NOT NULL`)
       .getMany();
-    return npcList.reduce((acc, npc) => {
-      return [...acc, ...npc.class];
-    }, []);
+    return npcList
+      .reduce((acc, npc) => [...acc, ...npc.class], [])
+      .filter((npc, i, arr) => arr.indexOf(npc) === i);
   }
 }

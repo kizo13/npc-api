@@ -1,5 +1,6 @@
 import { AgeEnums } from 'src/_shared/enums/age.enums';
 import { CultureEnums } from 'src/_shared/enums/culture.enums';
+import { RaceEnums } from 'src/_shared/enums/race.enums';
 import {
   MigrationInterface,
   QueryRunner,
@@ -123,8 +124,8 @@ export class CreateTables1610891617834 implements MigrationInterface {
           },
           {
             name: db.NPC_COLUMN_RACE,
-            type: 'varchar',
-            length: '15',
+            type: 'enum',
+            enum: Object.values(RaceEnums),
             isNullable: true,
           },
           {

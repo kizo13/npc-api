@@ -18,7 +18,10 @@ import { createConnection } from 'typeorm';
         entities: ['dist/**/*.entity.js'],
         migrationsTableName: 'migration',
         migrations: ['dist/src/migrations/**/*.js'],
-        ssl: !!configService.get('NODE_ENV'),
+        ssl:
+          configService.get('NODE_ENV') === 'production'
+            ? { rejectUnauthorized: false }
+            : false,
       }),
     }),
     ConfigModule,
@@ -41,7 +44,10 @@ export class DatabaseModule {
         entities: ['dist/**/*.entity.js'],
         migrationsTableName: 'migration',
         migrations: ['dist/src/migrations/**/*.js'],
-        ssl: !!this.configService.get('NODE_ENV'),
+        ssl:
+          this.configService.get('NODE_ENV') === 'production'
+            ? { rejectUnauthorized: false }
+            : false,
       });
       await connection.runMigrations();
     } catch (error) {

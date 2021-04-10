@@ -18,6 +18,7 @@ import { createConnection } from 'typeorm';
         entities: ['dist/**/*.entity.js'],
         migrationsTableName: 'migration',
         migrations: ['dist/src/migrations/**/*.js'],
+        ssl: !!configService.get('NODE_ENV'),
       }),
     }),
     ConfigModule,

@@ -41,6 +41,7 @@ export class DatabaseModule {
         entities: ['dist/**/*.entity.js'],
         migrationsTableName: 'migration',
         migrations: ['dist/src/migrations/**/*.js'],
+        ssl: !!this.configService.get('NODE_ENV'),
       });
       await connection.runMigrations();
     } catch (error) {

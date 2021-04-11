@@ -1,4 +1,4 @@
-import { IsObject, IsOptional, IsString } from 'class-validator';
+import { IsBoolean, IsObject, IsOptional, IsString } from 'class-validator';
 import Npc from 'src/npcs/npc.entity';
 
 class CreateNoteDto {
@@ -12,6 +12,9 @@ class CreateNoteDto {
   @IsString()
   @IsOptional()
   public name: string;
+
+  @IsBoolean()
+  public isPrivate: boolean;
 }
 
 export default CreateNoteDto;

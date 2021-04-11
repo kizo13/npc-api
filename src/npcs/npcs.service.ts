@@ -97,7 +97,7 @@ export class NpcsService {
     if (result.affected === 0) {
       throw new NpcNotFoundException(id);
     }
-    return;
+    return result;
   }
 
   async getClasses(): Promise<string[]> {

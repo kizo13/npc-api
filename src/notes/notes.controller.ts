@@ -38,12 +38,15 @@ export class NotesController {
   }
 
   @Post()
-  async createNpc(@Body() npc: CreateNoteDto, @Req() request: RequestWithUser) {
+  async createNote(
+    @Body() npc: CreateNoteDto,
+    @Req() request: RequestWithUser,
+  ) {
     return this.notesService.createNote(npc, request.user.id);
   }
 
   @Put(':id')
-  updateNpc(
+  updateNote(
     @Param() { id }: FindOneParams,
     @Body() note: UpdateNoteDto,
     @Req() request: RequestWithUser,

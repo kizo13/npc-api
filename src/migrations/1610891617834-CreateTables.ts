@@ -184,6 +184,10 @@ export class CreateTables1610891617834 implements MigrationInterface {
             type: 'timestamp',
             isNullable: true,
           },
+          {
+            name: db.NOTE_COLUMN_ISPRIVATE,
+            type: 'boolean',
+          },
         ],
       }),
       true,

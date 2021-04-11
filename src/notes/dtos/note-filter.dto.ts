@@ -1,4 +1,10 @@
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+  IsBoolean,
+  IsEnum,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 import GenderType from 'src/npcs/enums/gender-type.enum';
 
 class NoteFilterDto {
@@ -38,6 +44,10 @@ class NoteFilterDto {
   @IsNumber()
   @IsOptional()
   public uploaderId: number;
+
+  @IsBoolean()
+  @IsOptional()
+  public isPrivate: boolean;
 
   static where(
     filterDto: NoteFilterDto,
@@ -80,6 +90,11 @@ class NoteFilterDto {
     if (filterDto?.uploaderId) {
       whereStrParts.push(`"${createdByAlias}"."id" = :uploaderId`);
       whereParams.uploaderId = filterDto.uploaderId;
+    }
+
+    if (filterDto?.isPrivate) {
+      whereStrParts.push(`"${createdByAlias}"."isPrivate" = :isPrivate`);
+      whereParams.isPrivate = filterDto.isPrivate;
     }
 
     return [whereStrParts.join(' AND '), whereParams];

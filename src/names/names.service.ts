@@ -61,13 +61,15 @@ export class NamesService {
     };
     const key = filter.gender === GenderType.MALE ? 'males' : 'females';
     const firstnames = cultureNames[key].split(',');
-    const surnames = cultureNames.surnames.split(',');
+    const surnames = cultureNames.surnames?.split(',');
 
     const firstnamesChain = new Foswig(3, firstnames);
     const generatedFirstnames = firstnamesChain.generate(constraints);
-    const surnamesChain = new Foswig(3, surnames);
-    const generatedSurnames = surnamesChain.generate(constraints);
+    const surnamesChain = !!surnames ? new Foswig(3, surnames) : undefined;
+    const generatedSurnames = surnamesChain?.generate(constraints);
 
-    return `${generatedFirstnames} ${generatedSurnames}`;
+    return `${generatedFirstnames} ${
+      !!generatedSurnames ? generatedSurnames : ''
+    }`;
   }
 }

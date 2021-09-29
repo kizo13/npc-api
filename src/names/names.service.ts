@@ -28,16 +28,20 @@ export class NamesService {
     };
     const key = filter.gender === GenderType.MALE ? 'males' : 'females';
     const firstnames = cultureNames[key].split(',');
-    const surnames = cultureNames.surnames.split(',');
+    const surnames = cultureNames.surnames?.split(',');
 
     const generatedNames = [];
     const firstnamesChain = new Foswig(3, firstnames);
-    const surnamesChain = new Foswig(3, surnames);
+    const surnamesChain = !!surnames ? new Foswig(3, surnames) : undefined;
     const count = filter.count || 15;
     for (let i = 0; i < count; i++) {
       const generatedFirstnames = firstnamesChain.generate(constraints);
-      const generatedSurnames = surnamesChain.generate(constraints);
-      generatedNames.push(`${generatedFirstnames} ${generatedSurnames}`);
+      const generatedSurnames = surnamesChain?.generate(constraints);
+      generatedNames.push(
+        `${generatedFirstnames} ${
+          !!generatedSurnames ? generatedSurnames : ''
+        }`,
+      );
     }
 
     return generatedNames;

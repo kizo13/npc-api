@@ -1,7 +1,6 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as sharp from 'sharp';
-import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
 import NpcNotFoundException from 'src/_shared/exceptions/npc-not-found.exception';
 import { DeleteResult, Repository } from 'typeorm';
@@ -19,7 +18,6 @@ export class NpcsService {
   constructor(
     @InjectRepository(Npc)
     private npcRepository: Repository<Npc>,
-    private readonly authService: AuthService,
     private readonly usersService: UsersService,
   ) {}
 
@@ -28,6 +26,7 @@ export class NpcsService {
     filterDto: NpcFilterDto,
   ): Promise<NpcsPaginatedDto> {
     const npcAlias = 'npc';
+    const noteAlias = 'note';
     const uploaderAlias = 'uploader';
 
     const offset = (paginationDto.page - 1) * paginationDto.limit;
@@ -40,6 +39,10 @@ export class NpcsService {
     const [npcList, totalCount] = await this.npcRepository
       .createQueryBuilder(npcAlias)
       .leftJoinAndSelect(`${npcAlias}.${uploaderAlias}`, uploaderAlias)
+      .loadRelationCountAndMap(
+        `${npcAlias}.noteCount`,
+        `${npcAlias}.${noteAlias}`,
+      )
       .where(...NpcFilterDto.where(filterDto, npcAlias))
       .orderBy(paginationDto.sort, paginationDto.order)
       .skip(offset || 0)

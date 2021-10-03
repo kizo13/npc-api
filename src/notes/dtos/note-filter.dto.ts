@@ -1,10 +1,5 @@
-import {
-  IsBoolean,
-  IsEnum,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { Type } from 'class-transformer';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import GenderType from 'src/npcs/enums/gender-type.enum';
 
 class NoteFilterDto {
@@ -43,19 +38,21 @@ class NoteFilterDto {
 
   @IsNumber()
   @IsOptional()
-  public uploaderId: number;
-
-  @IsBoolean()
-  @IsOptional()
-  public isPrivate: boolean;
+  @Type(() => Number)
+  public createdById: number;
 
   static where(
     filterDto: NoteFilterDto,
+    noteAlias: string,
     npcAlias: string,
-    createdByAlias: string,
   ): [string, Record<string, unknown>] {
     const whereStrParts = [];
     const whereParams: Record<string, unknown> = {};
+
+    if (filterDto?.description) {
+      whereStrParts.push(`${noteAlias}.description = :description`);
+      whereParams.description = filterDto.description;
+    }
 
     if (filterDto?.gender) {
       whereStrParts.push(`${npcAlias}.gender = :gender`);
@@ -83,18 +80,13 @@ class NoteFilterDto {
     }
 
     if (filterDto?.name) {
-      whereStrParts.push(`${npcAlias}.name ILIKE :name`);
+      whereStrParts.push(`${noteAlias}.name ILIKE :name`);
       whereParams.name = `%${filterDto.name}%`;
     }
 
-    if (filterDto?.uploaderId) {
-      whereStrParts.push(`"${createdByAlias}"."id" = :uploaderId`);
-      whereParams.uploaderId = filterDto.uploaderId;
-    }
-
-    if (filterDto?.isPrivate) {
-      whereStrParts.push(`"${createdByAlias}"."isPrivate" = :isPrivate`);
-      whereParams.isPrivate = filterDto.isPrivate;
+    if (filterDto?.createdById) {
+      whereStrParts.push(`"${noteAlias}"."createdById" = :createdById`);
+      whereParams.createdById = filterDto.createdById;
     }
 
     return [whereStrParts.join(' AND '), whereParams];

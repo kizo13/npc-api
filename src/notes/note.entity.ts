@@ -5,7 +5,6 @@ import {
   Entity,
   JoinColumn,
   ManyToOne,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -23,11 +22,11 @@ class Note {
   @Column()
   public description: string;
 
-  @OneToOne(() => User, { eager: true })
+  @ManyToOne(() => User, { eager: true })
   @JoinColumn()
   public createdBy: User;
 
-  @OneToOne(() => User, { eager: true })
+  @ManyToOne(() => User, { eager: true })
   @JoinColumn()
   public modifiedBy: User;
 
@@ -36,6 +35,9 @@ class Note {
 
   @Column({ type: 'timestamp' })
   public modifiedAt: Date;
+
+  @Column({ default: false })
+  public isPrivate: boolean;
 }
 
 export default Note;

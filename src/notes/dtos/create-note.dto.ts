@@ -10,7 +10,6 @@ class CreateNoteDto {
   public description: string;
 
   @IsString()
-  @IsOptional()
   public name: string;
 
   @IsBoolean()

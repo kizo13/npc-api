@@ -1,7 +1,14 @@
+import Note from 'src/notes/note.entity';
 import { User } from 'src/users/user.entity';
 import { AgeEnums } from 'src/_shared/enums/age.enums';
 import { CultureEnums } from 'src/_shared/enums/culture.enums';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import GenderType from './enums/gender-type.enum';
 
 @Entity()
@@ -44,6 +51,9 @@ class Npc {
 
   @Column({ type: 'timestamp' })
   public modifiedAt: Date;
+
+  @OneToMany(() => Note, (note) => note.npc)
+  public note: Note;
 }
 
 export default Npc;

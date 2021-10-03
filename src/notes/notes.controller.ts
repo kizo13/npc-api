@@ -33,8 +33,9 @@ export class NotesController {
   getAll(
     @Query() paginationDto: NotesPaginationDto,
     @Query('filter') filterDto: NoteFilterDto,
+    @Req() request: RequestWithUser,
   ): Promise<NotesPaginatedDto> {
-    return this.notesService.findAll(paginationDto, filterDto);
+    return this.notesService.findAll(paginationDto, filterDto, request.user.id);
   }
 
   @Post()

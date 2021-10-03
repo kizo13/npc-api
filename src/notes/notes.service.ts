@@ -1,10 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
+import { Brackets, DeleteResult, Repository } from 'typeorm';
 import Note from './note.entity';
 import NoteFilterDto from './dtos/note-filter.dto';
 import CreateNoteDto from './dtos/create-note.dto';
-import { AuthService } from 'src/auth/auth.service';
 import UpdateNoteDto from './dtos/update-note.dto';
 import NoteNotFoundException from 'src/_shared/exceptions/note-not-found.exception';
 import { UsersService } from 'src/users/users.service';
@@ -19,13 +18,13 @@ export class NotesService {
   constructor(
     @InjectRepository(Note)
     private noteRepository: Repository<Note>,
-    private readonly authService: AuthService,
     private readonly usersService: UsersService,
   ) {}
 
   async findAll(
     paginationDto: NotesPaginationDto,
     filterDto: NoteFilterDto,
+    userId: number,
   ): Promise<NotesPaginatedDto> {
     const noteAlias = 'note';
     const npcAlias = 'npc';
@@ -44,7 +43,22 @@ export class NotesService {
       .leftJoinAndSelect(`${noteAlias}.${npcAlias}`, npcAlias)
       .leftJoinAndSelect(`${noteAlias}.${createdByAlias}`, createdByAlias)
       .leftJoinAndSelect(`${noteAlias}.${modifiedByAlias}`, modifiedByAlias)
-      .where(...NoteFilterDto.where(filterDto, npcAlias, createdByAlias))
+      .where(...NoteFilterDto.where(filterDto, noteAlias, npcAlias))
+      .andWhere(
+        new Brackets((qb) =>
+          qb.where(`${noteAlias}.isPrivate IS NOT TRUE`).orWhere(
+            new Brackets((qb2) =>
+              qb2
+                .where(`${noteAlias}.isPrivate = :isPrivate`, {
+                  isPrivate: true,
+                })
+                .andWhere(`${noteAlias}.createdById = :createdById`, {
+                  createdById: userId,
+                }),
+            ),
+          ),
+        ),
+      )
       .orderBy(paginationDto.sort, paginationDto.order)
       .skip(offset || 0)
       .take(paginationDto.limit)
@@ -67,12 +81,13 @@ export class NotesService {
     if (!createdBy) {
       throw new UserNotFoundException(String(userId));
     }
-
+    console.log('isPrivate', note.isPrivate);
     const newNote = this.noteRepository.create({
       ...note,
       createdBy,
       createdAt: new Date(),
     });
+    console.log('newNote', newNote);
     await this.noteRepository.save(newNote);
     return newNote;
   }

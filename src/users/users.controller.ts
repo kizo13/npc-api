@@ -8,8 +8,8 @@ import {
   Put,
   UseGuards,
 } from '@nestjs/common';
-import FindOneParams from 'src/_shared/classes/find-one-param';
-import { JwtAuthGuard } from 'src/_shared/guards/jwt-auth.guard';
+import FindOneParams from '@shared/classes/find-one-param';
+import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
 import UpdateUserDto from './dtos/update-user.dto';
 import { User } from './user.entity';
 import { UsersService } from './users.service';

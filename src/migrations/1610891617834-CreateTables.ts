@@ -1,6 +1,6 @@
-import { AgeEnums } from 'src/_shared/enums/age.enums';
-import { CultureEnums } from 'src/_shared/enums/culture.enums';
-import { RaceEnums } from 'src/_shared/enums/race.enums';
+import { AgeEnums } from '@shared/enums/age.enums';
+import { CultureEnums } from '@shared/enums/culture.enums';
+import { RaceEnums } from '@shared/enums/race.enums';
 import {
   MigrationInterface,
   QueryRunner,
@@ -8,7 +8,7 @@ import {
   TableColumn,
   TableForeignKey,
 } from 'typeorm';
-import { DbEnums as db } from '../_shared/enums/database.enums';
+import { DbEnums as db } from '@shared/enums/database.enums';
 
 export class CreateTables1610891617834 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

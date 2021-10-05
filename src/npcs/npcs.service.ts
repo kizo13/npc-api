@@ -2,16 +2,16 @@ import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as sharp from 'sharp';
 import { UsersService } from 'src/users/users.service';
-import NpcNotFoundException from 'src/_shared/exceptions/npc-not-found.exception';
+import NpcNotFoundException from '@shared/exceptions/npc-not-found.exception';
 import { DeleteResult, Repository } from 'typeorm';
 import CreateNpcDto from './dtos/create-npc.dto';
 import NpcFilterDto from './dtos/npc-filter.dto';
 import UpdateNpcDto from './dtos/update-npc.dto';
 import Npc from './npc.entity';
-import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
+import { updateBlobToBase64 } from '@shared/helpers/image.helper';
 import NpcsPaginationDto from './dtos/npcs-pagination.dto';
-import PaginationOrder from 'src/_shared/enums/pagination-order.enum';
-import PaginatedDto from 'src/_shared/dtos/paginated.dto';
+import PaginationOrder from '@shared/enums/pagination-order.enum';
+import PaginatedDto from '@shared/dtos/paginated.dto';
 
 @Injectable()
 export class NpcsService {

@@ -1,8 +1,8 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
-import { AgeEnums } from 'src/_shared/enums/age.enums';
-import { CultureEnums } from 'src/_shared/enums/culture.enums';
-import { RaceEnums } from 'src/_shared/enums/race.enums';
+import { AgeEnums } from '@shared/enums/age.enums';
+import { CultureEnums } from '@shared/enums/culture.enums';
+import { RaceEnums } from '@shared/enums/race.enums';
 import GenderType from '../enums/gender-type.enum';
 
 class NpcFilterDto {

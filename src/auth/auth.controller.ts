@@ -7,10 +7,10 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import RequestWithUser from 'src/_shared/dtos/request-with-user.dto';
-import { JwtAuthGuard } from 'src/_shared/guards/jwt-auth.guard';
-import JwtRefreshGuard from 'src/_shared/guards/jwt-refresh.guard';
-import { LocalAuthGuard } from 'src/_shared/guards/local-auth.guard';
+import RequestWithUser from '@shared/dtos/request-with-user.dto';
+import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
+import JwtRefreshGuard from '@shared/guards/jwt-refresh.guard';
+import { LocalAuthGuard } from '@shared/guards/local-auth.guard';
 import { AuthService } from './auth.service';
 import LoginRequestDto from './dtos/login-request.dto';
 

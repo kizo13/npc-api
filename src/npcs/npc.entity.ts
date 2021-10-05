@@ -1,7 +1,7 @@
 import Note from 'src/notes/note.entity';
 import { User } from 'src/users/user.entity';
-import { AgeEnums } from 'src/_shared/enums/age.enums';
-import { CultureEnums } from 'src/_shared/enums/culture.enums';
+import { AgeEnums } from '@shared/enums/age.enums';
+import { CultureEnums } from '@shared/enums/culture.enums';
 import {
   Column,
   Entity,

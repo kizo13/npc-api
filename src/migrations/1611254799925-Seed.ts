@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
-import { DbEnums as db } from '../_shared/enums/database.enums';
-import { CultureEnums as culture } from '../_shared/enums/culture.enums';
+import { DbEnums as db } from '@shared/enums/database.enums';
+import { CultureEnums as culture } from '@shared/enums/culture.enums';
 
 export class Seed1611254799925 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {

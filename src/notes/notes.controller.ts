@@ -13,10 +13,10 @@ import {
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import FindOneParams from 'src/_shared/classes/find-one-param';
-import PaginatedDto from 'src/_shared/dtos/paginated.dto';
-import RequestWithUser from 'src/_shared/dtos/request-with-user.dto';
-import { JwtAuthGuard } from 'src/_shared/guards/jwt-auth.guard';
+import FindOneParams from '@shared/classes/find-one-param';
+import PaginatedDto from '@shared/dtos/paginated.dto';
+import RequestWithUser from '@shared/dtos/request-with-user.dto';
+import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
 import CreateNoteDto from './dtos/create-note.dto';
 import NoteFilterDto from './dtos/note-filter.dto';
 import NotesPaginationDto from './dtos/notes-pagination.dto';

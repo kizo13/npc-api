@@ -11,10 +11,10 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import FindOneParams from 'src/_shared/classes/find-one-param';
-import RequestWithUser from 'src/_shared/dtos/request-with-user.dto';
-import { JwtAuthGuard } from 'src/_shared/guards/jwt-auth.guard';
-import FileService from 'src/_shared/services/file.service';
+import FindOneParams from '@shared/classes/find-one-param';
+import RequestWithUser from '@shared/dtos/request-with-user.dto';
+import { JwtAuthGuard } from '@shared/guards/jwt-auth.guard';
+import FileService from '@shared/services/file.service';
 import Avatar from './avatar.entity';
 import { AvatarsService } from './avatars.service';
 

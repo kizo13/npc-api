@@ -5,7 +5,7 @@ import { NpcsService } from './npcs.service';
 import { NpcsController } from './npcs.controller';
 import Npc from './npc.entity';
 import { AuthModule } from 'src/auth/auth.module';
-import FileService from 'src/_shared/services/file.service';
+import FileService from '@shared/services/file.service';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({

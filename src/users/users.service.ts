@@ -5,8 +5,8 @@ import * as argon2 from 'argon2';
 import * as bcrypt from 'bcrypt';
 import { User } from './user.entity';
 import UpdateUserDto from './dtos/update-user.dto';
-import UserNotFoundException from 'src/_shared/exceptions/user-not-found.exception';
-import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
+import UserNotFoundException from '@shared/exceptions/user-not-found.exception';
+import { updateBlobToBase64 } from '@shared/helpers/image.helper';
 
 @Injectable()
 export class UsersService {

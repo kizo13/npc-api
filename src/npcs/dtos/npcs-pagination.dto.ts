@@ -1,6 +1,6 @@
 import { IsIn, IsOptional, IsString } from 'class-validator';
-import PaginationDto from 'src/_shared/dtos/pagination.dto';
-import { DbEnums as db } from 'src/_shared/enums/database.enums';
+import PaginationDto from '@shared/dtos/pagination.dto';
+import { DbEnums as db } from '@shared/enums/database.enums';
 
 class NpcsPaginationDto extends PaginationDto {
   @IsString()

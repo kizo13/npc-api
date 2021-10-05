@@ -5,13 +5,13 @@ import Note from './note.entity';
 import NoteFilterDto from './dtos/note-filter.dto';
 import CreateNoteDto from './dtos/create-note.dto';
 import UpdateNoteDto from './dtos/update-note.dto';
-import NoteNotFoundException from 'src/_shared/exceptions/note-not-found.exception';
+import NoteNotFoundException from '@shared/exceptions/note-not-found.exception';
 import { UsersService } from 'src/users/users.service';
-import UserNotFoundException from 'src/_shared/exceptions/user-not-found.exception';
-import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
+import UserNotFoundException from '@shared/exceptions/user-not-found.exception';
+import { updateBlobToBase64 } from '@shared/helpers/image.helper';
 import NotesPaginationDto from './dtos/notes-pagination.dto';
-import PaginationOrder from 'src/_shared/enums/pagination-order.enum';
-import PaginatedDto from 'src/_shared/dtos/paginated.dto';
+import PaginationOrder from '@shared/enums/pagination-order.enum';
+import PaginatedDto from '@shared/dtos/paginated.dto';
 
 @Injectable()
 export class NotesService {

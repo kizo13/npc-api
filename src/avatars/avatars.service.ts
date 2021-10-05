@@ -5,9 +5,9 @@ import * as sharp from 'sharp';
 import Avatar from './avatar.entity';
 import { AuthService } from 'src/auth/auth.service';
 import { UsersService } from 'src/users/users.service';
-import UserNotFoundException from 'src/_shared/exceptions/user-not-found.exception';
-import AvatarNotFoundException from 'src/_shared/exceptions/avatar-not-found.exception';
-import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
+import UserNotFoundException from '@shared/exceptions/user-not-found.exception';
+import AvatarNotFoundException from '@shared/exceptions/avatar-not-found.exception';
+import { updateBlobToBase64 } from '@shared/helpers/image.helper';
 
 @Injectable()
 export class AvatarsService {

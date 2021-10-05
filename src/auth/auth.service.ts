@@ -6,7 +6,7 @@ import LoginRequestDto from './dtos/login-request.dto';
 import LoginResponseDto from './dtos/login-response.dto';
 import SessionTokenDataDto from './dtos/session-token-data.dto';
 import { UsersService } from 'src/users/users.service';
-import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
+import { updateBlobToBase64 } from '@shared/helpers/image.helper';
 import TokenResponseDto from './dtos/token-response.dto';
 
 @Injectable()

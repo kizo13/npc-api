@@ -1,6 +1,6 @@
 import { Type } from 'class-transformer';
 import { IsEnum, IsNumber, IsOptional, IsString, Min } from 'class-validator';
-import PaginationOrder from 'src/_shared/enums/pagination-order.enum';
+import PaginationOrder from '@shared/enums/pagination-order.enum';
 
 class PaginationDto {
   @IsNumber()

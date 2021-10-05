@@ -17,14 +17,15 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import FindOneParams from 'src/_shared/classes/find-one-param';
+import PaginatedDto from 'src/_shared/dtos/paginated.dto';
 import RequestWithUser from 'src/_shared/dtos/request-with-user.dto';
 import { JwtAuthGuard } from 'src/_shared/guards/jwt-auth.guard';
 import FileService from 'src/_shared/services/file.service';
 import CreateNpcDto from './dtos/create-npc.dto';
 import NpcFilterDto from './dtos/npc-filter.dto';
-import NpcsPaginatedDto from './dtos/npcs-paginated.dto';
 import NpcsPaginationDto from './dtos/npcs-pagination.dto';
 import UpdateNpcDto from './dtos/update-npc.dto';
+import Npc from './npc.entity';
 import { NpcsService } from './npcs.service';
 
 @UseGuards(JwtAuthGuard)
@@ -40,7 +41,7 @@ export class NpcsController {
   getAll(
     @Query() paginationDto: NpcsPaginationDto,
     @Query('filter') filterDto: NpcFilterDto,
-  ): Promise<NpcsPaginatedDto> {
+  ): Promise<PaginatedDto<Npc>> {
     return this.npcsService.findAll(paginationDto, filterDto);
   }
 

@@ -40,6 +40,9 @@ export class UsersService {
     const storedUser = await this.usersRepository.findOne(id, {
       where: { isActive },
     });
+    if (!storedUser) {
+      throw new UserNotFoundException(id);
+    }
     storedUser.avatar = updateBlobToBase64(storedUser.avatar);
     return storedUser;
   }

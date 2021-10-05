@@ -14,13 +14,14 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import FindOneParams from 'src/_shared/classes/find-one-param';
+import PaginatedDto from 'src/_shared/dtos/paginated.dto';
 import RequestWithUser from 'src/_shared/dtos/request-with-user.dto';
 import { JwtAuthGuard } from 'src/_shared/guards/jwt-auth.guard';
 import CreateNoteDto from './dtos/create-note.dto';
 import NoteFilterDto from './dtos/note-filter.dto';
-import NotesPaginatedDto from './dtos/notes-paginated.dto';
 import NotesPaginationDto from './dtos/notes-pagination.dto';
 import UpdateNoteDto from './dtos/update-note.dto';
+import Note from './note.entity';
 import { NotesService } from './notes.service';
 
 @UseGuards(JwtAuthGuard)
@@ -34,8 +35,13 @@ export class NotesController {
     @Query() paginationDto: NotesPaginationDto,
     @Query('filter') filterDto: NoteFilterDto,
     @Req() request: RequestWithUser,
-  ): Promise<NotesPaginatedDto> {
+  ): Promise<PaginatedDto<Note>> {
     return this.notesService.findAll(paginationDto, filterDto, request.user.id);
+  }
+
+  @Get(':id')
+  getUserById(@Param() { id }: FindOneParams): Promise<Note> {
+    return this.notesService.findOne(id);
   }
 
   @Post()

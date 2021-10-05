@@ -11,7 +11,7 @@ import UserNotFoundException from 'src/_shared/exceptions/user-not-found.excepti
 import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
 import NotesPaginationDto from './dtos/notes-pagination.dto';
 import PaginationOrder from 'src/_shared/enums/pagination-order.enum';
-import NotesPaginatedDto from './dtos/notes-paginated.dto';
+import PaginatedDto from 'src/_shared/dtos/paginated.dto';
 
 @Injectable()
 export class NotesService {
@@ -25,7 +25,7 @@ export class NotesService {
     paginationDto: NotesPaginationDto,
     filterDto: NoteFilterDto,
     userId: number,
-  ): Promise<NotesPaginatedDto> {
+  ): Promise<PaginatedDto<Note>> {
     const noteAlias = 'note';
     const npcAlias = 'npc';
     const createdByAlias = 'createdBy';
@@ -75,19 +75,28 @@ export class NotesService {
     };
   }
 
+  async findOne(id: string): Promise<Note> {
+    const storedNote = await this.noteRepository.findOne(id, {
+      where: { isPrivate: false },
+    });
+    if (!storedNote) {
+      throw new NoteNotFoundException(id);
+    }
+    storedNote.npc = updateBlobToBase64(storedNote.npc);
+    return storedNote;
+  }
+
   async createNote(note: CreateNoteDto, userId: number): Promise<Note> {
     const createdBy = await this.usersService.findOne(String(userId));
     createdBy.avatar = updateBlobToBase64(createdBy.avatar);
     if (!createdBy) {
       throw new UserNotFoundException(String(userId));
     }
-    console.log('isPrivate', note.isPrivate);
     const newNote = this.noteRepository.create({
       ...note,
       createdBy,
       createdAt: new Date(),
     });
-    console.log('newNote', newNote);
     await this.noteRepository.save(newNote);
     return newNote;
   }

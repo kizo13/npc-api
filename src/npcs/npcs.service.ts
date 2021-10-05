@@ -10,8 +10,8 @@ import UpdateNpcDto from './dtos/update-npc.dto';
 import Npc from './npc.entity';
 import { updateBlobToBase64 } from 'src/_shared/helpers/image.helper';
 import NpcsPaginationDto from './dtos/npcs-pagination.dto';
-import NpcsPaginatedDto from './dtos/npcs-paginated.dto';
 import PaginationOrder from 'src/_shared/enums/pagination-order.enum';
+import PaginatedDto from 'src/_shared/dtos/paginated.dto';
 
 @Injectable()
 export class NpcsService {
@@ -24,7 +24,7 @@ export class NpcsService {
   async findAll(
     paginationDto: NpcsPaginationDto,
     filterDto: NpcFilterDto,
-  ): Promise<NpcsPaginatedDto> {
+  ): Promise<PaginatedDto<Npc>> {
     const npcAlias = 'npc';
     const noteAlias = 'note';
     const uploaderAlias = 'uploader';

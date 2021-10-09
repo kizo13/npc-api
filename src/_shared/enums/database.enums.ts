@@ -38,6 +38,7 @@ export enum DbEnums {
   NOTE_COLUMN_CREATED_AT = 'createdAt',
   NOTE_COLUMN_MODIFIED_AT = 'modifiedAt',
   NOTE_COLUMN_ISPRIVATE = 'isPrivate',
+  NOTE_COLUMN_HASH = 'hash',
 
   NAME_TABLE = 'name',
   NAME_COLUMN_ID = 'id',

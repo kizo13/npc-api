@@ -10,6 +10,7 @@ import { MetaModule } from './meta/meta.module';
 import { NotesModule } from './notes/notes.module';
 import { AvatarsModule } from './avatars/avatars.module';
 import { NamesModule } from './names/names.module';
+import { PreviewModule } from './preview/preview.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { NamesModule } from './names/names.module';
     NotesModule,
     AvatarsModule,
     NamesModule,
+    PreviewModule,
   ],
   controllers: [AppController],
 })

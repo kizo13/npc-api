@@ -38,6 +38,9 @@ class Note {
 
   @Column({ default: false })
   public isPrivate: boolean;
+
+  @Column({ type: 'varchar', length: 36, unique: true })
+  public hash: string;
 }
 
 export default Note;

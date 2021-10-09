@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Brackets, DeleteResult, Repository } from 'typeorm';
+import { v4 as uuid } from 'uuid';
 import Note from './note.entity';
 import NoteFilterDto from './dtos/note-filter.dto';
 import CreateNoteDto from './dtos/create-note.dto';
@@ -94,6 +95,7 @@ export class NotesService {
     }
     const newNote = this.noteRepository.create({
       ...note,
+      hash: uuid(),
       createdBy,
       createdAt: new Date(),
     });

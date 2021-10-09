@@ -188,6 +188,11 @@ export class CreateTables1610891617834 implements MigrationInterface {
             name: db.NOTE_COLUMN_ISPRIVATE,
             type: 'boolean',
           },
+          {
+            name: db.NOTE_COLUMN_HASH,
+            type: 'varchar',
+            length: '36',
+          },
         ],
       }),
       true,
